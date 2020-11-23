@@ -10,10 +10,11 @@ protected static DAOFactory factory = new JDBCDAOFactory();
 	}
 	
 	public abstract void createTables();
-	public abstract void getBillDetailDAO();
-	public abstract void getBillHeadDAO();
+	public abstract BillDetailDAO getBillDetailDAO();
+	public abstract BillHeadDAO getBillHeadDAO();
 	public abstract void getCategoryDAO();
 	public abstract void getCompanyDAO();
 	public abstract void getProductDAO();
 	public abstract void getUerDAO();
+	public abstract boolean close();
 }
