@@ -8,7 +8,6 @@ public class JDBCDAOFactory extends DAOFactory{
 
 	@Override
 	public void createTables() {
-		// TODO Auto-generated method stub
 		
 	}
 

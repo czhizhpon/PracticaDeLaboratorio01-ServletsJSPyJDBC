@@ -23,13 +23,16 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 		
 		// ** Temporal solo para pruebas
 		jdbc.update("CREATE TABLE products (pro_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
+		for (int i = 0; i < 30; i++) {
+			jdbc.update("INSERT INTO products VALUES(NULL)");
+		}
 		// **
 		
 		jdbc.update("CREATE TABLE bill_details ( "
 				+ "det_id INT NOT NULL AUTO_INCREMENT, "
 				+ "det_amount INT, "
-				+ "det_unit_price DECIMAL(18,6), "
-				+ "det_total DECIMAL(18,6), "
+				+ "det_unit_price DECIMAL(12,2), "
+				+ "det_total DECIMAL(12,2), "
 				+ "det_deleted BOOLEAN DEFAULT '0', "
 				+ "hea_id INT, "
 				+ "pro_id INT, "
@@ -149,7 +152,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 			if(rsBillDetail != null && !rsBillDetail.getBoolean("det_deleted")) {
 				billDetail = new BillDetail();
 				billDetail.setDetId(rsBillDetail.getInt("det_id"));
-				billDetail.setDetAmount(rsBillDetail.getDouble("det_amount"));
+				billDetail.setDetAmount(rsBillDetail.getInt("det_amount"));
 				billDetail.setDetUnitPrice(rsBillDetail.getDouble("det_unit_price"));
 				billDetail.setDetTotal(rsBillDetail.getDouble("det_total"));
 				billDetail.setDetDeleted(false);

@@ -5,8 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
 import ec.edu.ups.model.User;
@@ -23,15 +25,16 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 		// ** Temporal solo para pruebas
 		jdbc.update("DROP TABLE IF EXISTS users ");
 		jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
+		jdbc.update("INSERT INTO users VALUES(NULL)");
 		// **
 		
 		jdbc.update("CREATE TABLE bill_heads ( "
 				+ "hea_id INT NOT NULL AUTO_INCREMENT, "
-				+ "hea_subtotal DECIMAL(18,6), "
-				+ "hea_vat DECIMAL(18,6), "
+				+ "hea_subtotal DECIMAL(12,2), "
+				+ "hea_vat DECIMAL(12,2), "
 				+ "hea_date DATETIME" + ", "
 				+ "hea_status VARCHAR(1) DEFAULT 'C'" + ", "
-				+ "hea_total DECIMAL(18,6), "
+				+ "hea_total DECIMAL(12,2), "
 				+ "hea_deleted BOOLEAN DEFAULT '0', "
 				+ "use_id INT, "
 				+ "PRIMARY KEY (hea_id), "
@@ -54,6 +57,7 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				+ (billHead.getHeaUser() == null 
 					? "NULL" : billHead.getHeaUser().getUseId()) + " "
 				+ ") ";
+		System.out.println(sql);
 		jdbc.update(sql);
 		List<BillDetail> billDetails = billHead.getHeaBillDetails();
 		if(billDetails != null) {
@@ -72,7 +76,9 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				billHead = getBillHead(rsBillHead);
 				List<BillDetail> billDetails = DAOFactory.getFactory().getBillDetailDAO().findByBillHeadId(rsBillHead.getInt("hea_id"));
 				billHead.setHeaBillDetails(billDetails);
-//				billHead.setHeaUser(null);
+				User user = new User();
+				user.setUseId(rsBillHead.getInt("use_id"));
+				billHead.setHeaUser(user);
 			}
 		} catch (SQLException e) {
 			System.out.println(">>>WARNING (JDBCBillHeadDAO:read): " + e.getMessage());
@@ -93,6 +99,21 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				+ "hea_total = " + MathFunction.getTrunkDecimal(billHead.getHeaTotal()) + " "
 				+ "WHERE hea_id = " + billHead.getHeaId() + " ";
 		jdbc.update(sql);
+		BillDetailDAO billDetailDAO = DAOFactory.getFactory().getBillDetailDAO();
+		List<BillDetail> billDetails = billDetailDAO.findByBillHeadId(billHead.getHeaId());
+		if (billHead.getHeaBillDetails() == null && billDetails != null) {
+			for (BillDetail billDetail : billDetails) {
+				billDetailDAO.delete(billDetail);
+			}
+		} else if (billHead.getHeaBillDetails() != null && billDetails == null) {
+			for (BillDetail billDetail : billHead.getHeaBillDetails()) {
+				billDetailDAO.create(billDetail);
+			}
+		} else if (billHead.getHeaBillDetails() != null && billDetails != null) {
+			for (BillDetail billDetail : billDetails) {
+				billDetailDAO.update(billDetail);
+			}
+		}
 	}
 
 	@Override
@@ -147,15 +168,20 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 	}
 	
 	@Override
-	public List<BillDetail> findShoppingByUserId(int id) {
+	public BillHead findShoppingByUserId(int id) {
 		List<BillDetail> billDetails = new ArrayList<BillDetail>();
+		BillHead billHead = null;
 		ResultSet rsBillHead = jdbc.query("SELECT * FROM bill_heads WHERE "
-				+ "usu_id = " + id + " AND hea_status = 'C' AND hea_deleted = '0'");
+				+ "use_id = " + id + " AND hea_status = 'C' AND hea_deleted = '0'");
 		try {
 			if(rsBillHead.next()) {
 				if (!rsBillHead.getBoolean("hea_deleted")) {
-					BillHead billHead = getBillHead(rsBillHead);
+					billHead = getBillHead(rsBillHead);
 					billDetails = DAOFactory.getFactory().getBillDetailDAO().findByBillHeadId(billHead.getHeaId());
+					billHead.setHeaBillDetails(billDetails);
+					User user = new User();
+					user.setUseId(rsBillHead.getInt("use_id"));
+					billHead.setHeaUser(user);
 				}
 			}
 		}catch (SQLException e) {
@@ -165,7 +191,7 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 			System.out.println(">>>WARNING (JDBCBillHeadDAO:findShoppingByUserId:GLOBAL): " 
 					+ e.getMessage());
 		}
-		return billDetails;
+		return billHead;
 	}
 	
 	@Override
@@ -192,5 +218,11 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 		}
 		return billHead;
 	}
+
+	@Override
+	public void setBillHeadTotal(int id) {
+		
+	}
+
 
 }

@@ -7,11 +7,14 @@ import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
+import ec.edu.ups.model.User;
 import ec.edu.ups.mysql.jdbc.JDBCDAOFactory;
 
 public class BillTest {
 	public static void main(String[] args) {
 		BillHeadDAO bh = DAOFactory.getFactory().getBillHeadDAO();
+		User user = new User();
+		user.setUseId(1);
 		bh.createTable();
 		BillHead[] billHeads = new BillHead[5];
 		billHeads[0] = new BillHead();
@@ -20,9 +23,9 @@ public class BillTest {
 		billHeads[0].setHeaDate(Calendar.getInstance());
 		billHeads[0].setHeaStatus('C');
 		billHeads[0].setHeaDeleted(false);
+		billHeads[0].setHeaUser(user);;
 		bh.create(billHeads[0]);
 		System.out.println(bh.read(1));
-		
 		
 		billHeads[1] = new BillHead();
 		billHeads[1].setHeaSubtotal(200.0);
@@ -52,7 +55,7 @@ public class BillTest {
 		BillDetailDAO bd = DAOFactory.getFactory().getBillDetailDAO();
 		BillDetail[] billDetails = new BillDetail[5];
 		billDetails[0] = new BillDetail();
-		billDetails[0].setDetAmount(1.0);
+		billDetails[0].setDetAmount(1);
 		billDetails[0].setDetUnitPrice(1.0);
 		billDetails[0].setDetTotal(1.0);
 		billDetails[0].setDetDeleted(false);
@@ -62,7 +65,7 @@ public class BillTest {
 		System.out.println(bd.read(1));
 		
 		billDetails[1] = new BillDetail();
-		billDetails[1].setDetAmount(2.0);
+		billDetails[1].setDetAmount(2);
 		billDetails[1].setDetUnitPrice(2.0);
 		billDetails[1].setDetTotal(2.0);
 		billDetails[1].setDetDeleted(false);
@@ -72,7 +75,7 @@ public class BillTest {
 		
 		billDetails[2] = bd.read(2);
 		billDetails[2].setDetDeleted(true);
-		bd.delete(billDetails[2]);
+//		bd.delete(billDetails[2]);
 		
 		
 		System.out.println("\nBillHead con detalles: \n" + bh.read(1) + "\n");

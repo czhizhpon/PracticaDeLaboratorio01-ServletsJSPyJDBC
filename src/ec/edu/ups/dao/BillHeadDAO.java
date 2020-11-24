@@ -14,7 +14,7 @@ public interface BillHeadDAO extends GenericDAO<BillHead, Integer>{
 	 * @param id
 	 * @return
 	 */
-	public abstract List<BillDetail> findShoppingByUserId(int id);
+	public abstract BillHead findShoppingByUserId(int id);
 	
 	/**
 	 * Función que retorna un BillHead a partir de una Consulta a la Base
@@ -25,4 +25,6 @@ public interface BillHeadDAO extends GenericDAO<BillHead, Integer>{
 	 * @return
 	 */
 	public abstract BillHead getBillHead(ResultSet rsBillHead);
+	
+	public abstract void setBillHeadTotal(int id);
 }
