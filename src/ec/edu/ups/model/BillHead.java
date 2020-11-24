@@ -94,7 +94,7 @@ public class BillHead {
 	@Override
 	public String toString() {
 		return "BillHead [heaId=" + heaId + ", heaSubtotal=" + heaSubtotal + ", heaVat=" + heaVat + ", heaDate="
-				+ heaDate + ", heaStatus=" + heaStatus + ", heaTotal=" + heaTotal + ", heaDeleted=" + heaDeleted
+				+ heaDate.getTime() + ", heaStatus=" + heaStatus + ", heaTotal=" + heaTotal + ", heaDeleted=" + heaDeleted
 				+ ", heaUser=" + heaUser + ", heaBillDetails=" + heaBillDetails + "]";
 	}
 }

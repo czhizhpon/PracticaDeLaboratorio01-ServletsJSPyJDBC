@@ -1,25 +1,24 @@
 package ec.edu.ups.mysql.jdbc;
 
+import ec.edu.ups.dao.BillDetailDAO;
+import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
 
 public class JDBCDAOFactory extends DAOFactory{
 
 	@Override
 	public void createTables() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void getBillDetailDAO() {
-		// TODO Auto-generated method stub
-		
+	public BillDetailDAO getBillDetailDAO() {
+		return new JDBCBillDetailDAO();
 	}
 
 	@Override
-	public void getBillHeadDAO() {
-		// TODO Auto-generated method stub
-		
+	public BillHeadDAO getBillHeadDAO() {
+		return new JDBCBillHeadDAO();
 	}
 
 	@Override
@@ -46,6 +45,8 @@ public class JDBCDAOFactory extends DAOFactory{
 		
 	}
 
-	
+	public boolean close() {
+		return ContextJDBC.getJDBC().close();
+	}
 	
 }

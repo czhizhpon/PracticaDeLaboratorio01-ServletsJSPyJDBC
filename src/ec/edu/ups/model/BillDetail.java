@@ -3,7 +3,7 @@ package ec.edu.ups.model;
 public class BillDetail {
 	
 	private int detId;
-	private double detAmount;
+	private int detAmount;
 	private double detUnitPrice;
 	private double detTotal;
 	private boolean detDeleted;
@@ -22,11 +22,11 @@ public class BillDetail {
 		this.detId = detId;
 	}
 	
-	public double getDetAmount() {
+	public int getDetAmount() {
 		return detAmount;
 	}
 	
-	public void setDetAmount(double detAmount) {
+	public void setDetAmount(int detAmount) {
 		this.detAmount = detAmount;
 	}
 	
@@ -72,8 +72,8 @@ public class BillDetail {
 
 	@Override
 	public String toString() {
-		return "BillDetail [detId=" + detId + ", detAmount=" + detAmount + ", detUnitPrice=" + detUnitPrice
+		return "BillDetail {detId=" + detId + ", detAmount=" + detAmount + ", detUnitPrice=" + detUnitPrice
 				+ ", detTotal=" + detTotal + ", detDeleted=" + detDeleted + ", detProduct=" + detProduct
-				+ ", detBillHead=" + detBillHead + "]";
+				+ ", detBillHead=" + detBillHead + "}";
 	}
 }
