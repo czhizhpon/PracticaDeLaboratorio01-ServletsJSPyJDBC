@@ -2,7 +2,10 @@ package ec.edu.ups.mysql.jdbc;
 
 import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.BillHeadDAO;
+import ec.edu.ups.dao.CategoryDAO;
+import ec.edu.ups.dao.CompanyDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.ProductDAO;
 
 public class JDBCDAOFactory extends DAOFactory{
 
@@ -22,20 +25,21 @@ public class JDBCDAOFactory extends DAOFactory{
 	}
 
 	@Override
-	public void getCategoryDAO() {
-		// TODO Auto-generated method stub
+	public CategoryDAO getCategoryDAO() {
+		return new JDBCCategoryDAO();
 		
 	}
 
 	@Override
-	public void getCompanyDAO() {
-		// TODO Auto-generated method stub
+	public CompanyDAO getCompanyDAO() {
+		return null;
+		//Roby edito xq no podia cargar mi parte sin esta opcion
 		
 	}
 
 	@Override
-	public void getProductDAO() {
-		// TODO Auto-generated method stub
+	public ProductDAO getProductDAO() {
+		return new JDBCProductDAO();
 		
 	}
 
