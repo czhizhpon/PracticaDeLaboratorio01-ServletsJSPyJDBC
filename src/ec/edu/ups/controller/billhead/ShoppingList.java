@@ -40,7 +40,7 @@ public class ShoppingList extends HttpServlet {
 //		}
 		BillHead billHead = billHeadDAO.findShoppingByUserId(1);
 		request.setAttribute("billHead", billHead);
-		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/carrito.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/user/cart.jsp");
         view.forward(request, response);
 	}
 

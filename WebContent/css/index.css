@@ -1,0 +1,18 @@
+@charset "UTF-8";
+.my-w-50{
+	width: 50%;
+}
+
+.my-w-min-500{
+	min-width: 500px; 
+}
+
+.scrolling-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.scrolling-wrapper .card {
+    display: inline-block;
+    margin: 10px;
+}

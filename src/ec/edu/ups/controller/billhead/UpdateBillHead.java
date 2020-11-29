@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.BillHead;
-import ec.edu.ups.resources.MathFunction;
 
 /**
  * Servlet implementation class UpdateBillHead
@@ -33,12 +32,16 @@ public class UpdateBillHead extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String errorUrl = "/sgrc/JSP/error.jsp";
 		try {
 			billHead = billHeadDAO.read(Integer.parseInt(request.getParameter("hea_id")));
-			MathFunction.setBillHeadTotal(billHead);
-			billHeadDAO.update(billHead);
+			if (!billHead.calcualteTotal())
+				response.sendRedirect(errorUrl);
+			else
+				billHeadDAO.update(billHead);
 		}catch (Exception e) {
 			System.out.println("ERROR:UpdateBillHead");
+			response.sendRedirect(errorUrl);
 		}
 	}
 
