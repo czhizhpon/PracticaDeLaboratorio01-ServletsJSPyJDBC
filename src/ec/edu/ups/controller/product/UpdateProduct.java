@@ -16,7 +16,7 @@ import ec.edu.ups.model.Product;
 /**
  * Servlet implementation class UpdateBillDetail
  */
-@WebServlet("/UpdateBillDetail")
+@WebServlet("/UpdateProduct")
 public class UpdateProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProductDAO productDAO;

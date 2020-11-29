@@ -2,6 +2,7 @@ package ec.edu.ups.controller.category;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.model.Category;
 
 /**
  * Servlet implementation class ProductList
@@ -31,7 +33,10 @@ public class ProductList extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		Category category = categoryDAO.findByProductListId(1);
+		request.setAttribute("category", category);
+		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/product.jsp");
+		view.forward(request, response);
 	}
 
 	/**

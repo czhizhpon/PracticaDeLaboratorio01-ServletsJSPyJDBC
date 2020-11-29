@@ -43,7 +43,6 @@ public class CreateCategory extends HttpServlet {
 		
 		try {
 			category.setCatName(request.getParameter("cat_name"));
-//			category.setCatProducts(catProducts);
 			categoryDAO.create(category);
 			url = "/index.jsp";
 		} catch (Exception e) {

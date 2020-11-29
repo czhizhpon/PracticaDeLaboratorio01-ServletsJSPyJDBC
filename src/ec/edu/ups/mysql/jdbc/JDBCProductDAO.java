@@ -25,15 +25,15 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		
 		jdbc.update("CREATE TABLE products ( "
 				+ "pro_id INT NOT NULL AUTO_INCREMENT, "
-				+ "pro_name VARCHAR(50), "
+				+ "pro_name VARCHAR(255), "
 				+ "pro_stock INT, "
 				+ "pro_price DECIMAL(12,2), "
 				+ "pro_deleted BOOLEAN DEFAULT '0', "
 				+ "com_id INT, "
 				+ "cat_id INT, "
 				+ "PRIMARY KEY (pro_id), "
-				+ "FOREIGN KEY(com_id) REFERENCES bill_heads(com_id), "
-				+ "FOREIGN KEY(cat_id) REFERENCES products(cat_id) "
+				+ "FOREIGN KEY(com_id) REFERENCES companies(com_id), "
+				+ "FOREIGN KEY(cat_id) REFERENCES categories(cat_id) "
 				+ ") ");
 		
 	}
@@ -41,10 +41,9 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 	@Override
 	public void create(Product product) {
 		String sql = "INSERT INTO products VALUES ("
-				+ "NULL, "
-				+ product.getProName() + ", "
+				+ "NULL, '"
+				+ product.getProName() + "', "
 				+ product.getProStock() + ", "
-				+ product.getProPrice() + ", "
 				+ product.getProPrice() + ", "
 				+ "DEFAULT, "
 				+ "NULL, "
@@ -61,6 +60,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		ResultSet rsCategory = null;
 		try {
 			if (rsProduct.next()) {
+
 				product = getProduct(rsProduct);
 				rsCategory = jdbc.query("SELECT * FROM categories WHERE cat_id = " 
 						+ rsProduct.getInt("cat_id"));
@@ -83,7 +83,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 	@Override
 	public void update(Product product) {
 		String sql = "UPDATE products SET "
-				+ "pro_name = " + product.getProName() + ", "
+				+ "pro_name = '" + product.getProName() + "', "
 				+ "pro_stock = " + product.getProStock() + ", "
 				+ "pro_price = " + product.getProPrice() + " "
 				+ "WHERE pro_id = " + product.getProId() + " ";
@@ -122,9 +122,9 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 	}
 
 	@Override
-	public List<Product> findByProductId(int id) {
+	public List<Product> findByCategoryId(int id) {
 		List<Product> products = new ArrayList<Product>();
-		ResultSet rsProduct = jdbc.query("SELECT * FROM products WHERE pro_id = " + id);
+		ResultSet rsProduct = jdbc.query("SELECT * FROM products WHERE cat_id = " + id);
 		try {
 			while(rsProduct.next()) {
 				if (!rsProduct.getBoolean("pro_deleted")) {
@@ -133,10 +133,10 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 				}
 			}
 		}catch (SQLException e) {
-			System.out.println(">>>WARNING (JDBCProductDAO:findByProductId): " 
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCategoryId): " 
 					+ e.getMessage());
 		}catch (Exception e) {
-			System.out.println(">>>WARNING (JDBCProductDAO:findByProductId:GLOBAL): " 
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCategoryId:GLOBAL): " 
 					+ e.getMessage());
 		}
 		
@@ -149,7 +149,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		try {
 			if(rsProduct != null && !rsProduct.getBoolean("pro_deleted")) {
 				product = new Product();
-				product.setProId(rsProduct.getInt("det_id"));
+				product.setProId(rsProduct.getInt("pro_id"));
 				product.setProName(rsProduct.getString("pro_name"));
 				product.setProStock(rsProduct.getInt("pro_stock"));
 				product.setProPrice(rsProduct.getDouble("pro_price"));
