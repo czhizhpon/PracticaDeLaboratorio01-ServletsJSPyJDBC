@@ -5,9 +5,9 @@ public class Product {
 	private int proId;
 	private String proName;
 	private int proStock;
+	private double proPrice;
 	private boolean proDeleted;
 	private Category proCategory;
-	private Company proCompany;
 	
 	public Product() {
 		
@@ -37,6 +37,14 @@ public class Product {
 		this.proStock = proStock;
 	}
 	
+	public double getProPrice() {
+		return proPrice;
+	}
+
+	public void setProPrice(double proPrice) {
+		this.proPrice = proPrice;
+	}
+
 	public boolean isProDeleted() {
 		return proDeleted;
 	}
@@ -52,18 +60,11 @@ public class Product {
 	public void setProCategory(Category proCategory) {
 		this.proCategory = proCategory;
 	}
-	
-	public Company getProCompany() {
-		return proCompany;
-	}
-	
-	public void setProCompany(Company proCompany) {
-		this.proCompany = proCompany;
-	}
 
 	@Override
 	public String toString() {
-		return "Product [proId=" + proId + ", proName=" + proName + ", proStock=" + proStock + ", proDeleted="
-				+ proDeleted + ", proCategory=" + proCategory + ", proCompany=" + proCompany + "]";
+		return "Product [proId=" + proId + ", proName=" + proName + ", proStock=" + proStock + ", proPrice=" + proPrice
+				+ ", proDeleted=" + proDeleted + ", proCategory=" + proCategory + "]";
 	}
+
 }

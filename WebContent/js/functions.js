@@ -57,3 +57,13 @@ function updateBillDetails(det_id){
     });
     console.log(amount);
 }
+
+function updateProducts(pro_id){
+    var name = document.getElementById("name" + pro_id).value;
+    getXMLRequest("UpdateProduct?pro_id=" + pro_id + "&pro_name=" + name, function(){
+        if (this.readyState == 4 && this.status == 200) {
+            location.href = "/sgrc/ProductList";
+        }
+    });
+    console.log(amount);
+}
