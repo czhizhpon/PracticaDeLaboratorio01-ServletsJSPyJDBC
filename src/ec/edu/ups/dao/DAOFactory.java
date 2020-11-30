@@ -13,8 +13,8 @@ protected static DAOFactory factory = new JDBCDAOFactory();
 	public abstract BillDetailDAO getBillDetailDAO();
 	public abstract BillHeadDAO getBillHeadDAO();
 	public abstract void getCategoryDAO();
-	public abstract void getCompanyDAO();
+	public abstract CompanyDAO getCompanyDAO();
 	public abstract void getProductDAO();
-	public abstract void getUerDAO();
+	public abstract UserDAO getUserDAO();
 	public abstract boolean close();
 }
