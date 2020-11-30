@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.UserDAO;
 import ec.edu.ups.model.Company;
 import ec.edu.ups.model.User;
@@ -14,14 +15,6 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 
 	@Override
 	public void createTable() {
-		jdbc.update("DROP TABLE IF EXISTS users");
-		
-		// Pruebas
-		jdbc.update("DROP TABLE IF EXISTS companies");
-		jdbc.update("CREATE TABLE companies (com_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-		jdbc.update("INSERT INTO companies VALUES(NULL)");
-		//
-		
 		// SQL
 		jdbc.update("CREATE TABLE users"
 				+ " ( "
@@ -165,8 +158,29 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 	
 	@Override
 	public List<User> findByCompanyId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> usersList = new ArrayList<User>();
+		String query = "SELECT * FROM users WHERE com_id = " + id;
+		ResultSet rsUsersList = jdbc.query(query);
+		
+		try {
+			
+			Company company = DAOFactory.getFactory().getCompanyDAO().read(id);
+			
+			while(rsUsersList.next()) {
+				User user = getUser(rsUsersList);
+				user.setUseCompany(company);
+				usersList.add(user);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCUserDAO:findByCompanyId): " 
+					+ e.getMessage());
+		} catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCUserDAO:findByCompanyId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		
+		return usersList;
 	}
 
 }

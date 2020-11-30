@@ -66,7 +66,8 @@ function createUser(f_id){
 	if(valid(form)){
 		$.post("/sgrc/CreateUser", form.serialize(), function(res, est, jqXHR){
 			var msg = res.split("&", 2);
-			showNotice(msg[0], msg[1])
+			showNotice(msg[0], msg[1]);
+			jQuery('#table_user').load('/sgrc/ListUser #table_content');
 		});
 		// Ejemplo de los mensajes que tiene que regresar del Servlet
 		//var res = "Se registró correctamente&e_notice_sucess"
