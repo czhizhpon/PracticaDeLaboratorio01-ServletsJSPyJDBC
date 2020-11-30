@@ -76,4 +76,14 @@ public class BillDetail {
 				+ ", detTotal=" + detTotal + ", detDeleted=" + detDeleted + ", detProduct=" + detProduct
 				+ ", detBillHead=" + detBillHead + "}";
 	}
+	
+	public boolean calculateTotal() {
+		try {
+			double detTotal = getDetAmount() * getDetUnitPrice();
+			setDetTotal(detTotal);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
 }

@@ -47,16 +47,17 @@ public class ContextJDBC {
 		return null;
 	}
 	
-	public boolean update(String sql) {
+	public int update(String sql) {
 		try {
 			statement.executeUpdate(sql);
-			return true;
+			return 0;
 		} catch (SQLException e) {
 			System.out.println(">>>WARNING (JDBC:update): --- \n" + sql + "\n ---\n" + e);
+			return Integer.parseInt(e.getErrorCode() + "");
 		} catch (Exception e) {
 			System.out.println(">>>WARNING GLOBAL (JDBC:update): --- \n" + sql + "\n ---\n" + e);
 		}
-		return false;
+		return -1;
 	}
 	
 	public boolean close() {

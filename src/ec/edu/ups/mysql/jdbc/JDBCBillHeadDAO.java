@@ -23,9 +23,9 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 		jdbc.update("DROP TABLE IF EXISTS bill_heads ");
 		
 		// ** Temporal solo para pruebas
-		jdbc.update("DROP TABLE IF EXISTS users ");
-		jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-		jdbc.update("INSERT INTO users VALUES(NULL)");
+		//jdbc.update("DROP TABLE IF EXISTS users ");
+		//jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
+		//jdbc.update("INSERT INTO users VALUES(NULL)");
 		// **
 		
 		jdbc.update("CREATE TABLE bill_heads ( "
@@ -44,7 +44,8 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 	}
 
 	@Override
-	public void create(BillHead billHead) {
+	public int create(BillHead billHead) {
+		int code = 0;
 		String date = DateFormat.getMySQLDate(billHead.getHeaDate());
 		String sql = "INSERT INTO bill_heads VALUES( "
 				+ "NULL" + ", "
@@ -57,14 +58,14 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				+ (billHead.getHeaUser() == null 
 					? "NULL" : billHead.getHeaUser().getUseId()) + " "
 				+ ") ";
-		System.out.println(sql);
-		jdbc.update(sql);
+		code = jdbc.update(sql);
 		List<BillDetail> billDetails = billHead.getHeaBillDetails();
 		if(billDetails != null) {
 			for(BillDetail billDetail : billDetails) {
-				DAOFactory.getFactory().getBillDetailDAO().create(billDetail);
+				code = DAOFactory.getFactory().getBillDetailDAO().create(billDetail);
 			}
 		}
+		return code;
 	}
 
 	@Override

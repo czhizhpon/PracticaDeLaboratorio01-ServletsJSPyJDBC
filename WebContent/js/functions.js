@@ -10,7 +10,7 @@ function showNotice(notice, notice_type){
     document.getElementById("main_notice").classList = '';
     document.getElementById("main_notice").classList.add("notice_container");
     document.getElementById("main_notice").classList.add(notice_type);
-    document.getElementById("notice").innerHTML = "<span>" + notice + "</span>";
+    document.getElementById("notice").innerHTML =  notice;
 }
 
 function isEmpty(value, error_message){
@@ -21,7 +21,7 @@ function isEmpty(value, error_message){
     return false;
 }
 
-function getXMLRequest(url, post_data, action_function){
+function getXMLPostRequest(url, post_data, action_function){
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     } else {
@@ -29,24 +29,8 @@ function getXMLRequest(url, post_data, action_function){
     }
     xmlhttp.open('POST', url, true);
 	xmlhttp.onreadystatechange = action_function;
-	
-/*
-    xmlhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            data = xmlhttp.response;
-            current_page = [0, 0, 4];
-            hiddeLoading();
-            print(data);
-        }
-    };
-
-    xmlhttp.onerror = function(e){
-        showNotice("Error API.", "bg-danger");
-        //hiddeLoading();
-    };
-    showLoading();
-*/
-    xmlhttp.send(post_data);
+	var formData = new FormData(post_data);
+    xmlhttp.send(formData);
 }
 
 function getXMLRequest(url, action_function){

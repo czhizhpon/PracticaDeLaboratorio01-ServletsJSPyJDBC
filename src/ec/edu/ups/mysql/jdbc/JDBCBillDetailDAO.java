@@ -43,7 +43,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 	}
 
 	@Override
-	public void create(BillDetail billDetail) {
+	public int create(BillDetail billDetail) {
 		String sql = "INSERT INTO bill_details VALUES ("
 				+ "NULL, "
 				+ billDetail.getDetAmount() + ", "
@@ -53,7 +53,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 				+ billDetail.getDetBillHead().getHeaId() + ", "
 				+ "NULL"
 				+ ")";
-		jdbc.update(sql);
+		return jdbc.update(sql);
 		
 	}
 

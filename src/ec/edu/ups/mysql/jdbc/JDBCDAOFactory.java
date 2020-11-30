@@ -1,11 +1,12 @@
 package ec.edu.ups.mysql.jdbc;
 
+import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.CompanyDAO;
-import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
+import ec.edu.ups.dao.UserDAO;
 
 public class JDBCDAOFactory extends DAOFactory{
 
@@ -32,8 +33,7 @@ public class JDBCDAOFactory extends DAOFactory{
 
 	@Override
 	public CompanyDAO getCompanyDAO() {
-		return null;
-		//Roby edito xq no podia cargar mi parte sin esta opcion
+		return new JDBCCompanyDAO();
 		
 	}
 
@@ -44,8 +44,8 @@ public class JDBCDAOFactory extends DAOFactory{
 	}
 
 	@Override
-	public void getUerDAO() {
-		// TODO Auto-generated method stub
+	public UserDAO getUserDAO() {
+		return new JDBCUserDAO();
 		
 	}
 

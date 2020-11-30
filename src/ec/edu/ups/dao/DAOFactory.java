@@ -15,6 +15,6 @@ protected static DAOFactory factory = new JDBCDAOFactory();
 	public abstract CategoryDAO getCategoryDAO();
 	public abstract CompanyDAO getCompanyDAO();
 	public abstract ProductDAO getProductDAO();
-	public abstract void getUerDAO();
+	public abstract UserDAO getUserDAO();
 	public abstract boolean close();
 }
