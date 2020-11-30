@@ -23,9 +23,9 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 		jdbc.update("DROP TABLE IF EXISTS bill_heads ");
 		
 		// ** Temporal solo para pruebas
-		jdbc.update("DROP TABLE IF EXISTS users ");
-		jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-		jdbc.update("INSERT INTO users VALUES(NULL)");
+		//jdbc.update("DROP TABLE IF EXISTS users ");
+		//jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
+		//jdbc.update("INSERT INTO users VALUES(NULL)");
 		// **
 		
 		jdbc.update("CREATE TABLE bill_heads ( "

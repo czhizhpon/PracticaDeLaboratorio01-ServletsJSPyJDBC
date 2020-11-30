@@ -47,8 +47,24 @@
 }
 
 .btn-select {
-  color: #333;
-  background-color: #f5f5f5;
-  border-color: #ccc;
-  padding:7px;
+	color: #333;
+	background-color: #f5f5f5;
+	border-color: #ccc;
+	padding:7px;
 }
+
+#cat_id {
+	width: 77px;
+	outline: none;
+	border: none;
+	background-color: #f5f5f5;
+	color: #333;
+	border-color: #ccc;
+	padding:7px;
+} 
+ 
+#width_tmp_select{
+  display : none;
+} 
+
+
