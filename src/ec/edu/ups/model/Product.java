@@ -8,7 +8,6 @@ public class Product {
 	private double proPrice;
 	private boolean proDeleted;
 	private Category proCategory;
-	private Company proCompany;
 	
 	public Product() {
 		
@@ -61,20 +60,11 @@ public class Product {
 	public void setProCategory(Category proCategory) {
 		this.proCategory = proCategory;
 	}
-	
-	public Company getProCompany() {
-		return proCompany;
-	}
-	
-	public void setProCompany(Company proCompany) {
-		this.proCompany = proCompany;
-	}
 
 	@Override
 	public String toString() {
 		return "Product [proId=" + proId + ", proName=" + proName + ", proStock=" + proStock + ", proPrice=" + proPrice
-				+ ", proDeleted=" + proDeleted + ", proCategory=" + proCategory + ", proCompany=" + proCompany + "]";
+				+ ", proDeleted=" + proDeleted + ", proCategory=" + proCategory + "]";
 	}
-
 
 }

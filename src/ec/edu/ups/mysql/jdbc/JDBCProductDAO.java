@@ -29,10 +29,8 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 				+ "pro_stock INT, "
 				+ "pro_price DECIMAL(12,2), "
 				+ "pro_deleted BOOLEAN DEFAULT '0', "
-				+ "com_id INT, "
 				+ "cat_id INT, "
 				+ "PRIMARY KEY (pro_id), "
-				+ "FOREIGN KEY(com_id) REFERENCES companies(com_id), "
 				+ "FOREIGN KEY(cat_id) REFERENCES categories(cat_id) "
 				+ ") ");
 		
@@ -46,7 +44,6 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 				+ product.getProStock() + ", "
 				+ product.getProPrice() + ", "
 				+ "DEFAULT, "
-				+ "NULL, "
 				+ product.getProCategory().getCatId()
 				+ ")";
 		jdbc.update(sql);
@@ -60,7 +57,6 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		ResultSet rsCategory = null;
 		try {
 			if (rsProduct.next()) {
-
 				product = getProduct(rsProduct);
 				rsCategory = jdbc.query("SELECT * FROM categories WHERE cat_id = " 
 						+ rsProduct.getInt("cat_id"));
@@ -69,8 +65,6 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 					category = DAOFactory.getFactory().getCategoryDAO().getCategory(rsCategory);
 				}
 				product.setProCategory(category);
-				Company company = new Company();
-				product.setProCompany(company);
 			}
 		}catch (SQLException e) {
 			System.out.println(">>>WARNING (JDBCProductsDAO:read): " + e.getMessage());
@@ -85,7 +79,8 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		String sql = "UPDATE products SET "
 				+ "pro_name = '" + product.getProName() + "', "
 				+ "pro_stock = " + product.getProStock() + ", "
-				+ "pro_price = " + product.getProPrice() + " "
+				+ "pro_price = " + product.getProPrice() + ", "
+				+ "cat_id = " + product.getProCategory().getCatId() + " " 
 				+ "WHERE pro_id = " + product.getProId() + " ";
 		jdbc.update(sql);
 		
@@ -164,6 +159,5 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		}
 		return product;
 	}
-
 
 }

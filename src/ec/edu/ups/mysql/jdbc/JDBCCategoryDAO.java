@@ -11,6 +11,7 @@ import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
+import ec.edu.ups.model.Company;
 import ec.edu.ups.model.Product;
 
 /**
@@ -30,11 +31,16 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 				+ "PRIMARY KEY )"
 				);
 		
+		jdbc.update("INSERT INTO companies VALUES "
+				+ "(NULL)");
+		
 		jdbc.update("CREATE TABLE categories ( "
 				+ "cat_id INT NOT NULL AUTO_INCREMENT, "
 				+ "cat_name VARCHAR(255), "
 				+ "cat_deleted BOOLEAN DEFAULT '0', "
-				+ "PRIMARY KEY (cat_id)"
+				+ "com_id INT, "
+				+ "PRIMARY KEY (cat_id), "
+				+ "FOREIGN KEY(com_id) REFERENCES companies(com_id) "
 				+ ") ");
 		DAOFactory.getFactory().getProductDAO().createTable();
 	}
@@ -44,7 +50,8 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 		String sql = "INSERT INTO categories VALUES( "
 				+ "NULL" + ", '"
 				+ category.getCatName() + "', "
-				+ "DEFAULT "
+				+ "DEFAULT, "
+				+ category.getCatCompany().getComId()
 				+ ") ";
 		jdbc.update(sql);
 		List<Product> products = category.getCatProducts();
@@ -61,9 +68,12 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 		ResultSet rsCategory = jdbc.query("SELECT * FROM categories WHERE cat_id = " + id);
 		try {
 			if (rsCategory.next()) {
+				Company company = new Company();
+				company.setComId(1);
 				category = getCategory(rsCategory);
 				List<Product> products = DAOFactory.getFactory().getProductDAO().findByCategoryId(rsCategory.getInt("cat_id"));
 				category.setCatProducts(products);
+				category.setCatCompany(company);
 			}
 		} catch (SQLException e) {
 			System.out.println(">>>WARNING (JDBCCategoryDAO:read): " + e.getMessage());
@@ -76,7 +86,8 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 	@Override
 	public void update(Category category) {
 		String sql = "UPDATE categories SET "
-				+ "cat_name = '" + category.getCatName() + "' "
+				+ "cat_name = '" + category.getCatName() + "', "
+				+ "com_id = " + category.getCatCompany() + " "
 				+ "WHERE cat_id = " + category.getCatId() + " ";
 		jdbc.update(sql);
 		ProductDAO productDAO = DAOFactory.getFactory().getProductDAO();
@@ -147,31 +158,6 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 		}
 		return categories;
 	}
-	
-	@Override
-	public Category findByProductListId(int id) {
-		List<Product> products = new ArrayList<Product>();
-		Category category = null;
-		ResultSet rsCategory = jdbc.query("SELECT * FROM categories WHERE "
-				+ "cat_id = " + id + " AND cat_deleted = '0'");
-		try {
-			if(rsCategory.next()) {
-				if (!rsCategory.getBoolean("cat_deleted")) {
-					category = getCategory(rsCategory);
-					products = DAOFactory.getFactory().getProductDAO().findByCategoryId(category.getCatId());
-					category.setCatProducts(products);
-				}
-			}
-			
-		}catch (SQLException e) {
-			System.out.println(">>>WARNING (JDBCCategoryDAO:findByProductListId): " 
-					+ e.getMessage());
-		}catch (Exception e) {
-			System.out.println(">>>WARNING (JDBCCategoryDAO:findByProductListId:GLOBAL): " 
-					+ e.getMessage());
-		}
-		return category;
-	}
 
 	@Override
 	public Category getCategory(ResultSet rsCategory) {
@@ -188,6 +174,30 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 					+ e.getMessage());
 		}
 		return category;
+	}
+
+	@Override
+	public List<Category> findByCompanyId(int id) {
+		List<Category> categories = new ArrayList<Category>();
+		Category category = null;
+		ResultSet rsCategory = jdbc.query("SELECT * FROM categories WHERE "
+				+ "com_id = " + id + " AND cat_deleted = '0'");
+		try {
+			while(rsCategory.next()) {
+				if (!rsCategory.getBoolean("cat_deleted")) {
+					category = getCategory(rsCategory);
+					categories.add(category);
+				}
+			}
+			
+		}catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCCategoryDAO:findByCompanyId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCCategoryDAO:ffindByCompanyId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return categories;
 	}
 
 }
