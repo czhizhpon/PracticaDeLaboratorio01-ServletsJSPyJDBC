@@ -8,7 +8,7 @@
 }
 
 .notice_container input{
-    background-image: url('../img/icons/close.png');
+    background-image: url('/sgrc/img/icons/close_icon.svg');
     background-repeat: no-repeat;
     background-size: 15px;
     background-position: center;
@@ -24,7 +24,17 @@
     height: 0px;
     margin: 0px;
     padding: 10px;
+    background-color: rgb(255,105,97);
+    outline: none !important;
 }
+
+	.notice_container input:hover{
+	    background-color: rgb(255,153,148);
+	}
+	
+	.notice_container input:active{
+		background-color: rgb(255,57,46);
+	}
 
 .my-close-btn-circle {
 	background-image: url('/sgrc/img/icons/close_icon.svg');
@@ -59,17 +69,13 @@
 	left: 15px
 }
 
-.notice_container input:hover{
-    background-color: rgba(255, 0, 0, 0.5);
-    opacity: 0.8;
-}
-
 .div_notice{
     display: inline-block;
     width: 85%;
     text-align: center;
     padding: 5px 10px;
-    color: #fff;
+    position: relative;
+    left: 11px;
 }
 
 .hero-img{
@@ -99,7 +105,7 @@
 }
 
 .e_notice_warning{
-    background-color: yellow;
+    background-color: #fbca00;
     color: #000;
 }
 

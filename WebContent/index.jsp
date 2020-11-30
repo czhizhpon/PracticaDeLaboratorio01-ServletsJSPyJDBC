@@ -13,8 +13,6 @@
 	<!--  Para el uso de Bootstrap -->
     <link rel="stylesheet" href="/sgrc/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/sgrc/css/fontawesome/all.min.css">
-    <!-- <link rel="stylesheet" href="/sgrc/css/bootstrap/mdb.min.css">-->
-    
     
     <link rel="stylesheet" href="/sgrc/css/main.css">
     <link rel="stylesheet" href="/sgrc/css/my_forms.css">
@@ -42,14 +40,13 @@
 			            <li class="nav-item">
 			              <a class="nav-link active" href="/sgrc/">Inicio</a>
 			            </li>
-		            
 			            <li class="nav-item ">
 			              <a class="nav-link text-nowrap" href="#">Mis Pedidos</a>
 			            </li>
 	          		</ul>
 		            <form class="mx-2 my-auto d-inline w-50" style="min-width: 100px">
 		            	<div class="input-group">
-		                	<input class="form-control my-search-input" type="search" placeholder="Buscar Productos" aria-label="Search"/>
+		                	<input id="search-product" name="search-product" class="form-control my-search-input" type="search" placeholder="Buscar Productos" aria-label="Search"/>
 		                	<span class="input-group-append">
 		                		<input type="button" class="search-icon-light">
                 			</span>

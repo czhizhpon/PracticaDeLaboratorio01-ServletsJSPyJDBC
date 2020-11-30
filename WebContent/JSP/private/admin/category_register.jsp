@@ -18,14 +18,16 @@
     <script src="/sgrc/js/bootstrap/bootstrap.min.js"></script>
     
     <script src="/sgrc/js/functions.js"></script>
+    <script src="/sgrc/js/jquery.validate.min.js"></script>
+    <script src="/sgrc/js/crud_category.js"></script>
 
     <title>Categorías</title>
 </head>
 <body>
-	<section class="container text-center col-8">
+	<section class="container text-center col-10">
    	<div class="row justify-content-center">
     	<div class="col-xl-4 col-md-12">
-    		<div class="row">
+    		<div class="row align-items-center">
     			<div class="col-6 p-4">
     				<h1 class="">Gestión de categorías</h1>
     			</div>
@@ -33,18 +35,22 @@
    				<img src="/sgrc/img/icons/avatar_icon.svg" style="width: 125px">
    			</div>
    			</div>
+   			<div id="main_notice" class="notice_container e_hidden">
+   				<input type="button" onclick="hideNotice()">
+                <div id="notice" class="div_notice"></div>
+      		</div>
 			<div class="row">
-				<form action="" class="text-left form col-12">
+				<form action="" class="text-left form col-12" id="category-form">
 					<div class="form-group ">
-						<label for="pro_name">Nombre:</label>
-						<input type="text" id="pro_name" name="pro_name" class="form-control" placeholder="Nombre">
+						<label for="cat_name">Nombre:</label>
+						<input type="text" id="cat_name" name="cat_name" class="form-control" placeholder="Nombre">
 					</div>
-					<input type="button" id="register" class="btn btn-primary" value="Registrar">
+					<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createCategory('category-form')">
 					<input type="button" id="accept"  class="btn btn-primary invisible" value="Aceptar">
 	   			</form>
    			</div>
     	</div>
-    	<div class="col-xl-8 col-md-12">
+    	<div class="col-xl-6 col-md-12">
     		<form class="text-left main-form my-search-form" onsubmit="return false">
                 <div class="row justify-content-center form-group">
                     <label for="search-heroe-input" class="col-form-label col-md-3 col-12">Buscar categoría:</label>
@@ -88,8 +94,6 @@
 			</div>
     	</div>
    	</div>
-	<button onclick="jQuery('#aaa').load(' #aaa');">Reload</button>
-	<div id="aaa"><%=new java.util.Date().toString()%></div>
 	</section>
 </body>
 </html>

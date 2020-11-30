@@ -25,18 +25,21 @@
     <title>Usuarios</title>
 </head>
 <body class="">
-   <section class="container text-center col-10">
+   <section class="container text-center col-11">
    	<div class="row justify-content-center">
     	<div class="col-xl-4 col-lg-12">
-    		<div class="row">
+    		<div class="row align-items-center">
     			<div class="col-6 p-4">
     				<h1 class="">Gestión de usuarios</h1>
     			</div>
-   			<div class="col-6 p-4">
-   				<img src="/sgrc/img/icons/avatar_icon.svg" style="width: 125px">
+	   			<div class="col-6 p-4">
+	   				<img src="/sgrc/img/icons/avatar_icon.svg" style="width: 125px">
+	   			</div>
    			</div>
-   			</div>
-			
+			<div id="main_notice" class="notice_container e_hidden">
+   				<input type="button" onclick="hideNotice()">
+                <div id="notice" class="div_notice"></div>
+        	</div>
 			<form action="" method="POST" class="text-left form col-12" id="user-form" name="user-form">
 				<div class="form-group ">
 					<label for="use_name">Nombre:</label>
@@ -77,16 +80,16 @@
 				<div class="form-group">
 					<label for="use_role">Seleccione el tipo de usuario:</label><br>
 					<div class="custom-control custom-radio custom-control-inline">
-					  	<input type="radio" id="use_role_user" name="use_role" class="custom-control-input" checked value="u">
+					  	<input type="radio" id="use_role_user" name="use_role" class="custom-control-input" checked value="U">
 					  	<label class="custom-control-label" for="use_role_user" >Usuario</label>
 					</div>
 					<div class="custom-control custom-radio custom-control-inline">
-					  	<input type="radio" id="use_role_admin" name="use_role" class="custom-control-input" value="a">
+					  	<input type="radio" id="use_role_admin" name="use_role" class="custom-control-input" value="A">
 					  	<label class="custom-control-label" for="use_role_admin">Administrador</label>
 					</div>
 				</div>
 				
-				<input type="submit" id="register" class="btn btn-primary" value="Registrar">
+				<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createUser('user-form')">
 				<input type="button" id="accept"  class="btn btn-primary invisible" value="Aceptar">
    			</form>
    			
