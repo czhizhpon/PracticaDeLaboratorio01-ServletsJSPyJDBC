@@ -1,94 +1,128 @@
 package ec.edu.ups.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	private int useId;
 	private String useUsername;
-	private String usuEmail;
-	private String usuPassword;
-	private String usuName;
-	private String usuLastname;
-	private char usuRole;
-	private boolean usuDeleted;
-	private Company usuCompany;
+	private String useEmail;
+	private String usePassword;
+	private String useName;
+	private String useLastname;
+	private char useRole;
+	private boolean useDeleted;
+	private Company useCompany;
 	
+	public User() {
+
+	}
+	
+	public User(int useId, String useUsername, String useEmail, 
+				String usePassword, String useName, String useLastname, 
+				char useRole, boolean useDeleted, Company useCompany) {
+		super();
+		this.useId = useId;
+		this.useUsername = useUsername;
+		this.useEmail = useEmail;
+		this.usePassword = usePassword;
+		this.useName = useName;
+		this.useLastname = useLastname;
+		this.useRole = useRole;
+		this.useDeleted = useDeleted;
+		this.useCompany = useCompany;
+	}
+	
+	public User(String useUsername, String useEmail, String usePassword, 
+				String useName, String useLastname, char useRole) {
+		super();
+		this.useUsername = useUsername;
+		this.useEmail = useEmail;
+		this.usePassword = usePassword;
+		this.useName = useName;
+		this.useLastname = useLastname;
+		this.useRole = useRole;
+	}
+
 	public int getUseId() {
 		return useId;
 	}
-	
+
 	public void setUseId(int useId) {
 		this.useId = useId;
 	}
-	
+
 	public String getUseUsername() {
 		return useUsername;
 	}
-	
+
 	public void setUseUsername(String useUsername) {
 		this.useUsername = useUsername;
 	}
-	
-	public String getUsuEmail() {
-		return usuEmail;
+
+	public String getUseEmail() {
+		return useEmail;
 	}
-	
-	public void setUsuEmail(String usuEmail) {
-		this.usuEmail = usuEmail;
+
+	public void setUseEmail(String useEmail) {
+		this.useEmail = useEmail;
 	}
-	
-	public String getUsuPassword() {
-		return usuPassword;
+
+	public String getUsePassword() {
+		return usePassword;
 	}
-	
-	public void setUsuPassword(String usuPassword) {
-		this.usuPassword = usuPassword;
+
+	public void setUsePassword(String usePassword) {
+		this.usePassword = usePassword;
 	}
-	
-	public String getUsuName() {
-		return usuName;
+
+	public String getUseName() {
+		return useName;
 	}
-	
-	public void setUsuName(String usuName) {
-		this.usuName = usuName;
+
+	public void setUseName(String useName) {
+		this.useName = useName;
 	}
-	
-	public String getUsuLastname() {
-		return usuLastname;
+
+	public String getUseLastname() {
+		return useLastname;
 	}
-	
-	public void setUsuLastname(String usuLastname) {
-		this.usuLastname = usuLastname;
+
+	public void setUseLastname(String useLastname) {
+		this.useLastname = useLastname;
 	}
-	
-	public char getUsuRole() {
-		return usuRole;
+
+	public char getUseRole() {
+		return useRole;
 	}
-	
-	public void setUsuRole(char usuRole) {
-		this.usuRole = usuRole;
+
+	public void setUseRole(char useRole) {
+		this.useRole = useRole;
 	}
-	
-	public boolean isUsuDeleted() {
-		return usuDeleted;
+
+	public boolean isUseDeleted() {
+		return useDeleted;
 	}
-	
-	public void setUsuDeleted(boolean usuDeleted) {
-		this.usuDeleted = usuDeleted;
+
+	public void setUseDeleted(boolean useDeleted) {
+		this.useDeleted = useDeleted;
 	}
-	
-	public Company getUsuCompany() {
-		return usuCompany;
+
+	public Company getUseCompany() {
+		return useCompany;
 	}
-	
-	public void setUsuCompany(Company usuCompany) {
-		this.usuCompany = usuCompany;
+
+	public void setUseCompany(Company useCompany) {
+		this.useCompany = useCompany;
 	}
 
 	@Override
 	public String toString() {
-		return "User [useId=" + useId + ", useUsername=" + useUsername + ", usuEmail=" + usuEmail + ", usuPassword="
-				+ usuPassword + ", usuName=" + usuName + ", usuLastname=" + usuLastname + ", usuRole=" + usuRole
-				+ ", usuDeleted=" + usuDeleted + ", usuCompany=" + usuCompany + "]";
+		return "User [useId=" + useId + ", useUsername=" + useUsername + ", useEmail=" + useEmail + ", usePassword="
+				+ usePassword + ", useName=" + useName + ", useLastname=" + useLastname + ", useRole=" + useRole
+				+ ", useDeleted=" + useDeleted + ", useCompany=" + useCompany + "]";
 	}
 
 }
