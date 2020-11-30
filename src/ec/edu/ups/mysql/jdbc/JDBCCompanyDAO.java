@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ec.edu.ups.dao.CompanyDAO;
+import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.Company;
 
 public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer> 
@@ -12,6 +13,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 
 	@Override
 	public void createTable() {
+		jdbc.update("DROP TABLE IF EXISTS users");
 		jdbc.update("DROP TABLE IF EXISTS companies");
 		
 		// SQL
@@ -23,7 +25,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 				+ "PRIMARY KEY (com_id) "
 				+ ") ");
 		
-		// Llamar al create de Users.
+		DAOFactory.getFactory().getUserDAO().createTable();
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 				+ "(com_name)"
 				+ " VALUES( "
 				//+ "NULL" + ", "
-				+ "'" + company.getComName() + "', "
+				+ "'" + company.getComName() + "' "
 				//+ "DEFAULT, "
 				+ ") ";
 		//System.out.println(sql);

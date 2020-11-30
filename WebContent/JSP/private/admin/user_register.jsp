@@ -103,7 +103,8 @@
                     <input type="button" class="search-icon btn col-1" onclick="searchAHero()">
                 </div>
             </form>
-    		<div class="table-responsive">
+            <div id="table_user">
+    		<div class="table-responsive" id="table_content">
 			  <table class="table table-striped">
 			    <thead class="thead-dark">
 			      <tr>
@@ -118,38 +119,22 @@
 			      </tr>
 			    </thead>
 			    <tbody>
+			    <c:set var="tableUser" scope="request" value="${users}" />
+			      <c:forEach var="user" items="${tableUser}">
 			      <tr>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
+			        <td>${user.useName}</td>
+			        <td>${user.useLastname}</td>
+			        <td>${user.useEmail}</td>
+			        <td>${user.useUsername}</td>
+			        <td>${user.useRole}</td>
+			        <td>${user.useCompany.comId}</td>
 			        <td><a href="#" class="btn btn-info">Editar</a></td>
 			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
 			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
+			      </c:forEach>
 			    </tbody>
 			  </table>
+			</div>
 			</div>
     	</div>
    	</div>

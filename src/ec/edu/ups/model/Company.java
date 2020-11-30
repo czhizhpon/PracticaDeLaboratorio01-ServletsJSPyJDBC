@@ -27,6 +27,11 @@ public class Company implements Serializable{
 		this.comProducts = comProducts;
 	}
 
+	public Company(String comName) {
+		super();
+		this.comName = comName;
+	}
+	
 	public int getComId() {
 		return comId;
 	}
