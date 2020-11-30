@@ -27,7 +27,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 	}
 
 	@Override
-	public void create(Company company) {
+	public int create(Company company) {
 		String sql = "INSERT INTO companies "
 				+ "(com_name)"
 				+ " VALUES( "
@@ -36,7 +36,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 				//+ "DEFAULT, "
 				+ ") ";
 		//System.out.println(sql);
-		jdbc.update(sql);
+		return jdbc.update(sql);
 	}
 
 	@Override

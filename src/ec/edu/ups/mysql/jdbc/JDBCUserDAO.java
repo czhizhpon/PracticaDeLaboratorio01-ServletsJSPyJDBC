@@ -40,7 +40,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 	}
 
 	@Override
-	public void create(User user) {		
+	public int create(User user) {		
 		String sql = "INSERT INTO users "
 				+ "(use_username, use_email, use_password, use_name, "
 				+ "use_lastname, use_role, com_id)"
@@ -48,7 +48,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 				//+ "NULL" + ", "
 				+ "'" + user.getUseUsername() + "', "
 				+ "'" + user.getUseEmail() + "', "
-				+ "'" + user.getUsePassword() + "', "
+				+ "MD5('" + user.getUsePassword() + "'), "
 				+ "'" + user.getUseName() + "', "
 				+ "'" + user.getUseLastname() + "', "
 				+ "'" + user.getUseRole() + "', "
@@ -58,7 +58,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 				+ ") ";
 		
 		//System.out.println(sql);
-		jdbc.update(sql);
+		return jdbc.update(sql);
 		
 	}
 

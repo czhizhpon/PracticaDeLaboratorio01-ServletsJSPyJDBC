@@ -44,7 +44,8 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 	}
 
 	@Override
-	public void create(BillHead billHead) {
+	public int create(BillHead billHead) {
+		int code = 0;
 		String date = DateFormat.getMySQLDate(billHead.getHeaDate());
 		String sql = "INSERT INTO bill_heads VALUES( "
 				+ "NULL" + ", "
@@ -57,14 +58,14 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				+ (billHead.getHeaUser() == null 
 					? "NULL" : billHead.getHeaUser().getUseId()) + " "
 				+ ") ";
-		System.out.println(sql);
-		jdbc.update(sql);
+		code = jdbc.update(sql);
 		List<BillDetail> billDetails = billHead.getHeaBillDetails();
 		if(billDetails != null) {
 			for(BillDetail billDetail : billDetails) {
-				DAOFactory.getFactory().getBillDetailDAO().create(billDetail);
+				code = DAOFactory.getFactory().getBillDetailDAO().create(billDetail);
 			}
 		}
+		return code;
 	}
 
 	@Override

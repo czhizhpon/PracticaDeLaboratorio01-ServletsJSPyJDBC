@@ -19,7 +19,7 @@
     <script src="/sgrc/js/bootstrap/bootstrap.min.js"></script>
     
     <script src="/sgrc/js/functions.js"></script>
-    <script src="/sgrc/js/bill.js"></script>
+    <script src="/sgrc/js/crud_bill.js"></script>
 
     <title>Usuarios</title>
 </head>

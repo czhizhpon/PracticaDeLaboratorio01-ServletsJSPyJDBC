@@ -64,17 +64,14 @@ function valid(f){
 function createUser(f_id){
     var form = $("#" + f_id);
 	if(valid(form)){
-		getXMLRequest("/sgrc/CreateUser", form.serialize(), function(){
-        	if (this.readyState == 4 && this.status == 200) {
-            	var res = xmlhttp.response;
-				msg = res.split("&", 2);
-				showNotice(msg, "e_notice_sucess")
-        	}
-    	});
+		$.post("/sgrc/CreateUser", form.serialize(), function(res, est, jqXHR){
+			var msg = res.split("&", 2);
+			showNotice(msg[0], msg[1])
+		});
 		// Ejemplo de los mensajes que tiene que regresar del Servlet
-		var res = "Se registró correctamente&e_notice_sucess"
-		var msg = res.split("&", 2);
-		showNotice(msg[0], msg[1])
+		//var res = "Se registró correctamente&e_notice_sucess"
+		//var msg = res.split("&", 2);
+		//showNotice(msg[0], msg[1])
 	} else {
 		showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
 	}
