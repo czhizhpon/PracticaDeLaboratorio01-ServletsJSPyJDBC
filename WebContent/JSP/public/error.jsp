@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Hubo un error</h1>
-	<a href="/sgrc/index.html">Regresar al index</a>
+	<a href="/sgrc/index.jsp">Regresar al inicio</a>
 </body>
 </html>
 

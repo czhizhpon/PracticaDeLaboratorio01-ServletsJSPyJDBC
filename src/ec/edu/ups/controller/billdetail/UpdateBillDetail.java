@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.BillDetail;
-import ec.edu.ups.resources.MathFunction;
 
 /**
  * Servlet implementation class UpdateBillDetail
@@ -30,24 +29,23 @@ public class UpdateBillDetail extends HttpServlet {
         super();
         billDetailDAO = DAOFactory.getFactory().getBillDetailDAO();
         billDetail = new BillDetail();
-        
-        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String errorUrl = "/sgrc/JSP/error.jsp";
 		try {
 			billDetail = billDetailDAO.read(Integer.parseInt(request.getParameter("det_id")));
 			billDetail.setDetAmount(Integer.parseInt(request.getParameter("det_amount")));
-			MathFunction.setBillDetailTotal(billDetail);
+			billDetail.calculateTotal();
 			billDetail.setDetDeleted(false);
 			billDetailDAO.update(billDetail);
 			RequestDispatcher view = request.getRequestDispatcher("UpdateBillHead?hea_id=" + billDetail.getDetBillHead().getHeaId());
 	        view.forward(request, response);
 		} catch (Exception e) {
-			System.out.println("ERROR " + e);
+			response.sendRedirect(errorUrl);
 		}
 	}
 

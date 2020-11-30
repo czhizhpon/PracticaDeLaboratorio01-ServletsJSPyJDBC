@@ -10,7 +10,7 @@ function showNotice(notice, notice_type){
     document.getElementById("main_notice").classList = '';
     document.getElementById("main_notice").classList.add("notice_container");
     document.getElementById("main_notice").classList.add(notice_type);
-    document.getElementById("notice").innerHTML = "<span>" + notice + "</span>";
+    document.getElementById("notice").innerHTML =  notice;
 }
 
 function isEmpty(value, error_message){

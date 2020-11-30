@@ -3,6 +3,8 @@ package ec.edu.ups.model;
 import java.util.Calendar;
 import java.util.List;
 
+import ec.edu.ups.resources.Constants;
+
 public class BillHead {
 	
 	private int heaId;
@@ -96,5 +98,26 @@ public class BillHead {
 		return "BillHead [heaId=" + heaId + ", heaSubtotal=" + heaSubtotal + ", heaVat=" + heaVat + ", heaDate="
 				+ heaDate.getTime() + ", heaStatus=" + heaStatus + ", heaTotal=" + heaTotal + ", heaDeleted=" + heaDeleted
 				+ ", heaUser=" + heaUser + ", heaBillDetails=" + heaBillDetails + "]";
+	}
+	
+	public boolean calcualteTotal() {
+		double heaSubtotal = 0.0;
+		double heaVat = 0.0;
+		double heaTotal = 0.0;
+		try {
+			for(BillDetail bd : this.heaBillDetails) {
+				if(!bd.isDetDeleted()) {
+					heaSubtotal += bd.getDetTotal();
+				}
+			}
+			setHeaSubtotal(heaSubtotal);
+			heaVat = heaSubtotal * Constants.IVA;
+			setHeaVat(heaVat);
+			heaTotal = heaSubtotal + heaVat;
+			setHeaTotal(heaTotal);
+		} catch (Exception ex) {
+			return false;
+		}
+		return true;
 	}
 }
