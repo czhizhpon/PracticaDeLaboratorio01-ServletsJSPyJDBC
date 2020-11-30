@@ -27,7 +27,7 @@
    <section class="container text-center col-11">
    	<div class="row justify-content-center">
     	<div class="col-xl-6 col-lg-12">
-    		<form class="text-left main-form my-search-form" onsubmit="return false">
+    		<form class="text-left main-form my-search-form" onsubmit="return false;">
                 <div class="row justify-content-center form-group">
                     <label for="search-heroe-input" class="col-form-label col-md-3 col-12">Buscar Factura:</label>
                     <input id="search-heroe-input" name="search-heroe-input" class="form-control col-md-8 col-11" type="date">

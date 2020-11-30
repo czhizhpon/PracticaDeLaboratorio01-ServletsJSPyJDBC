@@ -26,7 +26,7 @@
 
 </head>
 <body>
-<c:set var="bill" scope="request" value="${billHead}"/>
+
 	<header>
        	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       		<div class="container">
@@ -99,6 +99,7 @@
 	            		&laquo; Continuar comprando
             		</a>
            		</h2>
+           		<c:set var="bill" scope="request" value="${billHead}"/>
            		<c:forEach var="billDetail" items="${bill.heaBillDetails}">
 		            <!-- Item-->
 		            <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
