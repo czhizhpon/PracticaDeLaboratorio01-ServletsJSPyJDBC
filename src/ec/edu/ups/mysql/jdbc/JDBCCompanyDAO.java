@@ -2,6 +2,7 @@ package ec.edu.ups.mysql.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ec.edu.ups.dao.CompanyDAO;
@@ -20,7 +21,7 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 		jdbc.update("CREATE TABLE companies"
 				+ " ( "
 				+ "com_id INT NOT NULL AUTO_INCREMENT, "
-				+ "com_name VARCHAR(255) NOT NULL, "
+				+ "com_name VARCHAR(255) NOT NULL UNIQUE, "
 				+ "com_deleted BOOLEAN DEFAULT '0', "
 				+ "PRIMARY KEY (com_id) "
 				+ ") ");
@@ -82,11 +83,28 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 
 	@Override
 	public List<Company> find() {
-
+		List<Company> companiesList = new ArrayList<Company>();
+		String query = "SELECT * FROM companies";
+		ResultSet rsCompaniesList = jdbc.query(query);		
 		
+		try {
 
+			while (rsCompaniesList.next()) {
+				if (!rsCompaniesList.getBoolean("com_deleted")) {
+					Company company = getCompany(rsCompaniesList);
+					companiesList.add(company);
+				}
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCCompanyDAO:find): " 
+					+ e.getMessage());
+		} catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCCompanyDAO:find:GLOBAL): " 
+					+ e.getMessage());
+		}
 		
-		return null;
+		return companiesList;
 	}
 	
 	@Override

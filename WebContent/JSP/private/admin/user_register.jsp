@@ -104,37 +104,37 @@
                 </div>
             </form>
             <div id="table_user">
-    		<div class="table-responsive" id="table_content">
-			  <table class="table table-striped">
-			    <thead class="thead-dark">
-			      <tr>
-			        <th scope="col">Nombre</th>
-			        <th scope="col">Apellidos</th>
-			        <th scope="col">Correo</th>
-			        <th scope="col">Nom. Usuario</th>
-			        <th scope="col">Rol</th>
-			        <th scope="col">Empresa</th>
-			        <th scope="col"></th>
-			        <th scope="col"></th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    <c:set var="tableUser" scope="request" value="${users}" />
-			      <c:forEach var="user" items="${tableUser}">
-			      <tr>
-			        <td>${user.useName}</td>
-			        <td>${user.useLastname}</td>
-			        <td>${user.useEmail}</td>
-			        <td>${user.useUsername}</td>
-			        <td>${user.useRole}</td>
-			        <td>${user.useCompany.comId}</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      </c:forEach>
-			    </tbody>
-			  </table>
-			</div>
+	    		<div class="table-responsive" id="table_content">
+				  <table class="table table-striped">
+				    <thead class="thead-dark">
+				      <tr>
+				        <th scope="col">Nombre</th>
+				        <th scope="col">Apellidos</th>
+				        <th scope="col">Correo</th>
+				        <th scope="col">Nom. Usuario</th>
+				        <th scope="col">Rol</th>
+				        <th scope="col">Empresa</th>
+				        <th scope="col"></th>
+				        <th scope="col"></th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    <c:set var="tableUser" scope="request" value="${users}" />
+				      <c:forEach var="user" items="${tableUser}">
+				      <tr>
+				        <td>${user.useName}</td>
+				        <td>${user.useLastname}</td>
+				        <td>${user.useEmail}</td>
+				        <td>${user.useUsername}</td>
+				        <td>${user.useRole}</td>
+				        <td>${user.useCompany.comName}</td>
+				        <td><a href="#" class="btn btn-info">Editar</a></td>
+				        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
+				      </tr>
+				      </c:forEach>
+				    </tbody>
+				  </table>
+				</div>
 			</div>
     	</div>
    	</div>
