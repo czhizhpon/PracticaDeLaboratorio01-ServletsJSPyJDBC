@@ -67,4 +67,12 @@
   display : none;
 } 
 
+.cart-link{
+	text-decoration: none !important;
+	background-color: #eee;
+	color: #333;
+	margin: 5px;
+	padding: 3px;
+	border-radius: 5px;
+}
 

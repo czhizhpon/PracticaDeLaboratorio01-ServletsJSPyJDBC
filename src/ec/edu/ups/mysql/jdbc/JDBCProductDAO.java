@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
-import ec.edu.ups.model.Company;
 import ec.edu.ups.model.Product;
 
 /**
@@ -37,7 +36,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 	}
 
 	@Override
-	public void create(Product product) {
+	public int create(Product product) {
 		String sql = "INSERT INTO products VALUES ("
 				+ "NULL, '"
 				+ product.getProName() + "', "
@@ -46,7 +45,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 				+ "DEFAULT, "
 				+ product.getProCategory().getCatId()
 				+ ")";
-		jdbc.update(sql);
+		return jdbc.update(sql);
 		
 	}
 
@@ -158,6 +157,53 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 					+ e.getMessage());
 		}
 		return product;
+	}
+
+	@Override
+	public List<Product> findToStoreCatId(int catId, String s) {
+		List<Product> products = new ArrayList<Product>();
+		ResultSet rsProduct = jdbc.query("SELECT * FROM products WHERE "
+				+ "cat_id = " + catId + " AND pro_name LIKE '%" + s + "%' AND pro_stock > 0");
+		ResultSet rsCategory = null;
+		Category category = null;
+		int catIdBefore = 0;
+		try {
+			while(rsProduct.next()) {
+				if (!rsProduct.getBoolean("pro_deleted")) {
+					Product product = getProduct(rsProduct);
+					if(catIdBefore == 0 || catIdBefore == rsProduct.getInt("cat_id")) {
+						rsCategory = jdbc.query("SELECT * FROM categories "
+								+ "WHERE cat_id = " + rsProduct.getInt("cat_id"));
+						if(rsCategory.next()) {
+							category = DAOFactory.getFactory().getCategoryDAO()
+									.getCategory(rsCategory);
+							catIdBefore = category.getCatId();
+						}
+					}
+					
+					product.setProCategory(category);
+					products.add(product);
+				}
+			}
+		}catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findToStoreCatId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findToStoreCatId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return products;
+	}
+
+	@Override
+	public void updateWhitoutCat(Product product) {
+		String sql = "UPDATE products SET "
+				+ "pro_name = '" + product.getProName() + "', "
+				+ "pro_stock = " + product.getProStock() + ", "
+				+ "pro_price = " + product.getProPrice() + " " 
+				+ "WHERE pro_id = " + product.getProId() + " ";
+		jdbc.update(sql);
+		
 	}
 
 }

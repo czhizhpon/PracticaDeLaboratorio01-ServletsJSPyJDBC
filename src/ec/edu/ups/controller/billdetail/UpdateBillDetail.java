@@ -37,13 +37,22 @@ public class UpdateBillDetail extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String errorUrl = "/sgrc/JSP/error.jsp";
 		try {
+			int detAmount = Integer.parseInt(request.getParameter("det_amount"));
 			billDetail = billDetailDAO.read(Integer.parseInt(request.getParameter("det_id")));
-			billDetail.setDetAmount(Integer.parseInt(request.getParameter("det_amount")));
-			billDetail.calculateTotal();
-			billDetail.setDetDeleted(false);
-			billDetailDAO.update(billDetail);
-			RequestDispatcher view = request.getRequestDispatcher("UpdateBillHead?hea_id=" + billDetail.getDetBillHead().getHeaId());
-	        view.forward(request, response);
+			if (detAmount > billDetail.getDetProduct().getProStock()) {
+				response.getWriter().append("No hay suficiente stock. Disponible: " 
+						+ billDetail.getDetProduct().getProStock() + "&e_notice_warning");
+			}else {
+				billDetail.setDetAmount(detAmount);
+				billDetail.calculateTotal();
+				billDetail.setDetDeleted(false);
+				billDetailDAO.update(billDetail);
+				response.getWriter().append("Y&e_notice_sucess");
+//				RequestDispatcher view = request.getRequestDispatcher("UpdateBillHead?hea_id=" + billDetail.getDetBillHead().getHeaId());
+//				RequestDispatcher view = request.getRequestDispatcher("ShoppingList");
+//		        view.forward(request, response);
+//				response.sendRedirect("ShoppingList");
+			}
 		} catch (Exception e) {
 			response.sendRedirect(errorUrl);
 		}

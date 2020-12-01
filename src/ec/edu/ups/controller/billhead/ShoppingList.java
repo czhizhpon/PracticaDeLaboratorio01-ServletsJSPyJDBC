@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
 
 /**
@@ -39,6 +40,11 @@ public class ShoppingList extends HttpServlet {
 //			page = Integer.parseInt(request.getParameter("page"));
 //		}
 		BillHead billHead = billHeadDAO.findShoppingByUserId(1);
+		for (BillDetail billDetail : billHead.getHeaBillDetails()) {
+			billDetail.calculateTotal();
+		}
+		billHead.calcualteTotal();
+		billHeadDAO.update(billHead);
 		request.setAttribute("billHead", billHead);
 		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/user/cart.jsp");
         view.forward(request, response);
