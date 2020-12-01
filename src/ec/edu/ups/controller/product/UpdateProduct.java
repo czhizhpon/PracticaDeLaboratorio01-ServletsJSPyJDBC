@@ -1,7 +1,6 @@
 package ec.edu.ups.controller.product;
 
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,15 +28,21 @@ public class UpdateProduct extends HttpServlet {
         super();
         productDAO = DAOFactory.getFactory().getProductDAO();
         product = new Product();
-        
-        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
+    
+  }
+
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
 			product = productDAO.read(Integer.parseInt(request.getParameter("pro_id")));
 			product.setProName(request.getParameter("pro_name"));
 			product.setProStock(Integer.parseInt(request.getParameter("pro_stock")));
@@ -49,13 +54,6 @@ public class UpdateProduct extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("ERROR " + e);
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 
 }

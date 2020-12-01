@@ -12,19 +12,20 @@ public class Company implements Serializable{
 	private String comName;
 	private boolean comDeleted;
 	private List<User> comUsers;
-	private List<Product> comProducts;
+	private List<Category> comCategories;
 	
 	public Company() {
 
 	}
 	
-	public Company(int comId, String comName, boolean comDeleted, List<User> comUsers, List<Product> comProducts) {
+	public Company(int comId, String comName, boolean comDeleted, 
+					List<User> comUsers, List<Category> comCategories) {
 		super();
 		this.comId = comId;
 		this.comName = comName;
 		this.comDeleted = comDeleted;
 		this.comUsers = comUsers;
-		this.comProducts = comProducts;
+		this.comCategories = comCategories;
 	}
 
 	public Company(String comName) {
@@ -64,29 +65,14 @@ public class Company implements Serializable{
 		this.comUsers = comUsers;
 	}
 	
-	public List<Product> getComProducts() {
-		return comProducts;
+	public List<Category> getComCategories() {
+		return comCategories;
 	}
-	
-	public void setComProducts(List<Product> comProducts) {
-		this.comProducts = comProducts;
+
+	public void setComCategories(List<Category> comCategories) {
+		this.comCategories = comCategories;
 	}
-	
-	/**
-	 * Agrega un nuevo producto a la empresa
-	 * @param product
-	 */
-	public void addProduct(Product product) {
-		if (this.comProducts != null) {
-			this.comProducts = new ArrayList<Product>();
-			this.comProducts.add(product);
-		} else {
-			this.comProducts.add(product);
-		}
-	}
-	
-	// Cambiar a composicion
-	
+
 	/**
 	 * Crea un nuevo usuario para agregarlo a la empresa
 	 * @param username
@@ -109,6 +95,6 @@ public class Company implements Serializable{
 	@Override
 	public String toString() {
 		return "Company [comId=" + comId + ", comName=" + comName + ", comDeleted=" + comDeleted + ", comUsers="
-				+ comUsers + ", comProducts=" + comProducts + "]";
+				+ comUsers + ", comCategories=" + comCategories + "]";
 	}
 }

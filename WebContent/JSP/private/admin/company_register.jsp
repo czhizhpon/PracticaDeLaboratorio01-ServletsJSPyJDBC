@@ -59,38 +59,28 @@
                     <input type="button" class="search-icon btn col-1" onclick="">
                 </div>
             </form>
-    		<div class="table-responsive">
-			  <table class="table table-striped">
-			    <thead class="thead-dark">
-			      <tr>
-			        <th scope="col">Nombre</th>
-			        <th scope="col"></th>
-			        <th scope="col"></th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-					<td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			    </tbody>
-			  </table>
+            <div id="table_company">
+	    		<div class="table-responsive" id="table_content">
+				  <table class="table table-striped">
+				    <thead class="thead-dark">
+				      <tr>
+				        <th scope="col">Nombre</th>
+				        <th scope="col"></th>
+				        <th scope="col"></th>
+				      </tr>
+				    </thead>
+				    <tbody>
+					    <c:set var="tableCompany" scope="request" value="${companies}" />
+					    <c:forEach var="company" items="${tableCompany}">
+					      <tr>
+					        <td>${company.comName}</td>
+					        <td><a href="#" class="btn btn-info">Editar</a></td>
+					        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
+					      </tr>
+					     </c:forEach>
+				    </tbody>
+				  </table>
+				</div>
 			</div>
     	</div>
    	</div>

@@ -21,6 +21,7 @@ public class CreateUser extends HttpServlet {
     private UserDAO userDAO;
     private User user;
     private Company company;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,7 +51,9 @@ public class CreateUser extends HttpServlet {
 			user.setUseEmail(request.getParameter("use_email"));
 			user.setUseRole(request.getParameter("use_role").charAt(0));
 			user.setUseCompany(company);
+			
 			int res = userDAO.create(user);
+			
 			if(res == 1062) {
 				response.getWriter().append("El usuario o correo ya existe&e_notice_error");
 			} else if(res == 0) {
@@ -58,6 +61,7 @@ public class CreateUser extends HttpServlet {
 			} else {
 				response.getWriter().append("Hubo un error al crear el Usuario&e_notice_error");
 			}
+			
 		}catch (Exception e) {
 			response.getWriter().append("Hubo un error al crear el Usuario&e_notice_error");
 			e.printStackTrace();
