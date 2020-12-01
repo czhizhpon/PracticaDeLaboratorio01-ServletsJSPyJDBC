@@ -46,20 +46,22 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 	}
 
 	@Override
-	public void create(Category category) {
+	public int create(Category category) {
+		int code;
 		String sql = "INSERT INTO categories VALUES( "
 				+ "NULL" + ", '"
 				+ category.getCatName() + "', "
 				+ "DEFAULT, "
 				+ category.getCatCompany().getComId()
 				+ ") ";
-		jdbc.update(sql);
+		code = jdbc.update(sql);
 		List<Product> products = category.getCatProducts();
 		if(products != null) {
 			for(Product product : products) {
-				DAOFactory.getFactory().getProductDAO().create(product);
+				code = DAOFactory.getFactory().getProductDAO().create(product);
 			}
 		}
+		return code;
 	}
 
 	@Override

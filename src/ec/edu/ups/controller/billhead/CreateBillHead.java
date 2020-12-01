@@ -34,7 +34,12 @@ public class CreateBillHead extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
+		billHead = new BillHead();
+		User user = new User();
+		user.setUseId(1);
+		billHead.setHeaUser(user);
+		billHeadDao.create(billHead);
+		response.getWriter().append("Se ha registrado&e_notice_sucess");
 	}
 
 	/**

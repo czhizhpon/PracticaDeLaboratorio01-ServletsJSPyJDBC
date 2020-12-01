@@ -48,16 +48,6 @@ function createBillDetail(){
 	
 }
 
-function updateBillDetails(det_id){
-    var amount = document.getElementById("quantity" + det_id).value;
-    getXMLRequest("UpdateBillDetail?det_id=" + det_id + "&det_amount=" + amount, function(){
-        if (this.readyState == 4 && this.status == 200) {
-            location.href = "/sgrc/ShoppingList";
-        }
-    });
-    console.log(amount);
-}
-
 function updateProducts(pro_id){
     var name = document.getElementById("name" + pro_id).value;
     getXMLRequest("UpdateProduct?pro_id=" + pro_id + "&pro_name=" + name, function(){

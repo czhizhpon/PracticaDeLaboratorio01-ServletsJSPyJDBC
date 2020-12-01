@@ -16,6 +16,7 @@
     
     <link rel="stylesheet" href="/sgrc/css/products.css">
     <link rel="stylesheet" href="/sgrc/css/main.css">
+    <link rel="stylesheet" href="/sgrc/css/my_forms.css">
 
 	<script src="/sgrc/js/bootstrap/jquery-3.5.1.min.js"></script>
     <script src="/sgrc/js/bootstrap/popper.min.js"></script>
@@ -23,6 +24,7 @@
 
     
     <script src="/sgrc/js/functions.js"></script>
+    <script src="/sgrc/js/cart.js"></script>
 
 </head>
 <body>
@@ -95,10 +97,14 @@
 	        <div class="col-xl-9 col-md-8">
 	            <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
 	            	<span>Productos</span>
-	            	<a class="font-size-sm" href="#">
+	            	<a class="font-size-sm" href="/sgrc/store">
 	            		&laquo; Continuar comprando
             		</a>
            		</h2>
+           		<div id="main_notice" class="notice_container e_hidden">
+   					<input type="button" onclick="hideNotice()">
+                	<div id="notice" class="div_notice"></div>
+        		</div>
            		<c:set var="bill" scope="request" value="${billHead}"/>
            		<c:forEach var="billDetail" items="${bill.heaBillDetails}">
 		            <!-- Item-->
@@ -108,20 +114,21 @@
 		                    <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://via.placeholder.com/240x240/FF0000/000000" alt="Product"></a>
 		                    -->
 		                    <div class="media-body p-3">
-		                        <h3 class="font-weight-semibold border-0">${billDetail.detId} asdasdasdasdas das d</h3>
-		                        <div class="font-size-sm"><span class="text-muted mr-2">Precio Unitario:</span>$${billDetail.detUnitPrice}</div>
-		                        <div class="font-size-sm"><span class="text-muted mr-2">Id:</span>8.5</div>
+		                        <h3 class="font-weight-semibold border-0">${billDetail.detProduct.proName}</h3>
+		                        <div class="font-size-sm"><span class="text-muted mr-2">Precio Unitario:</span>$${billDetail.detProduct.proPrice}</div>
 		                        <div class="font-size-lg text-primary pt-2">$${billDetail.detTotal}</div>
 		                    </div>
 		                </div>
 		                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 15rem;">
 		                    <div class="form-group mb-2">
-		                        <label for="quantity${billDetail.detId}">Cantidad</label>
-		                        <input class="form-control form-control-sm" type="number" id="quantity${billDetail.detId}" value="${billDetail.detAmount}">
+		                        <label for="det_amount${billDetail.detId}">Cantidad</label>
+		                        <input class="form-control form-control-sm" type="number" 
+		                        	id="det_amount${billDetail.detId}" value="${billDetail.detAmount}"
+		                        	min="1" onkeypress="return isNumberKey(this, event)">
 		                    </div>
 		                    <button class="btn btn-outline-secondary btn-md btn-block  mb-2" type="button" onclick="updateBillDetails(${billDetail.detId})">
 		                        <i class="fas fa-sync"></i>&ensp;Actualizar</button>
-		                    <button class="btn btn-outline-danger btn-md btn-block mb-2" type="button">
+		                    <button class="btn btn-outline-danger btn-md btn-block mb-2" type="button" onclick="deleteBillDetails(${billDetail.detId})">
 		                        <i class="fas fa-trash"></i>&ensp;Eliminar</button>
 		                </div>
 		            </div>
@@ -158,9 +165,9 @@
 	            <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">Note</span>Additional comments</h3>
 	            <textarea class="form-control mb-3" id="order-comments" rows="5"></textarea>
 	            -->
-	            <a class="btn btn-primary btn-block" href="#">
+	            <button class="btn btn-primary btn-block" onclick="updateBillHead()">
 	                <i class="fas fa-wallet"></i>&ensp;Procesar Pedido
-                </a>
+                </button>
 	        </div>
 	    </div>
 	</div>

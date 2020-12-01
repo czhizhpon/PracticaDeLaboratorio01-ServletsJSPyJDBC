@@ -108,5 +108,7 @@ label.error{
 }
 
 input.error, select.error{
-	background-color: #ff696110;
+	background-color: #ff696120;
+	box-shadow: 0px 0px 5px #ff696150;
+	border: solid #ff6961 1px;
 }

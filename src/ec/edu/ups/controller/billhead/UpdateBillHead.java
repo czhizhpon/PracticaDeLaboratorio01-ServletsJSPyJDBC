@@ -1,6 +1,9 @@
 package ec.edu.ups.controller.billhead;
 
 import java.io.IOException;
+import java.util.Calendar;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
 
 /**
@@ -32,16 +36,34 @@ public class UpdateBillHead extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String errorUrl = "/sgrc/JSP/error.jsp";
 		try {
-			billHead = billHeadDAO.read(Integer.parseInt(request.getParameter("hea_id")));
-			if (!billHead.calcualteTotal())
-				response.sendRedirect(errorUrl);
-			else
-				billHeadDAO.update(billHead);
+			billHead = billHeadDAO.findShoppingByUserId(1);
+			if (!billHead.calcualteTotal()) {
+				response.getWriter().append("No se pudo realizar las operaciones&e_notice_error");
+			}else {
+				billHead.setHeaStatus('R');
+				billHead.setHeaDate(Calendar.getInstance());
+				for(BillDetail billDetail : billHead.getHeaBillDetails()) {
+					int stock = billDetail.getDetProduct().getProStock();
+					int amount = billDetail.getDetAmount();
+					if(stock - amount < 0) {
+						response.getWriter().append("No se pudo procesar el pedido, "
+								+ "no hay stock suficiente para \"" 
+								+ billDetail.getDetProduct().getProName() + "\". Disponible: " 
+								+ billDetail.getDetProduct().getProStock() + "&e_notice_warning");
+						break;
+					}else {
+						billDetail.getDetProduct().setProStock(stock - amount);
+						billHeadDAO.update(billHead);
+						response.getWriter().append("a&e_notice_sucess");
+						RequestDispatcher view = request.getRequestDispatcher("CreateBillHead");
+						view.forward(request, response);
+					}
+				}
+				
+			}
 		}catch (Exception e) {
-			System.out.println("ERROR:UpdateBillHead");
-			response.sendRedirect(errorUrl);
+			response.getWriter().append("No se pudo realizar su pedido&e_notice_error");
 		}
 	}
 
