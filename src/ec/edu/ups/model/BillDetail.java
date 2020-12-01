@@ -79,7 +79,9 @@ public class BillDetail {
 	
 	public boolean calculateTotal() {
 		try {
-			double detTotal = getDetAmount() * getDetUnitPrice();
+			double detTotal = getDetAmount() * getDetProduct().getProPrice();
+			detTotal = Math.round(detTotal * 100.0)/100.0;
+			setDetUnitPrice(getDetProduct().getProPrice());
 			setDetTotal(detTotal);
 		} catch (Exception e) {
 			return false;

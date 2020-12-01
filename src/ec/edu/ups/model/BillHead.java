@@ -110,10 +110,13 @@ public class BillHead {
 					heaSubtotal += bd.getDetTotal();
 				}
 			}
+			heaSubtotal = Math.round(heaSubtotal * 100.0)/100.0;
 			setHeaSubtotal(heaSubtotal);
 			heaVat = heaSubtotal * Constants.IVA;
+			heaVat = Math.round(heaVat * 100.0)/100.0;
 			setHeaVat(heaVat);
 			heaTotal = heaSubtotal + heaVat;
+			heaTotal = Math.round(heaTotal * 100.0)/100.0;
 			setHeaTotal(heaTotal);
 		} catch (Exception ex) {
 			return false;

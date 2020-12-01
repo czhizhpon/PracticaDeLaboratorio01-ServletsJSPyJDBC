@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
+import ec.edu.ups.model.User;
 
 /**
  * Servlet implementation class ShoppingList
@@ -32,13 +34,20 @@ public class ShoppingList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		int page = 1;
-//		int recordsPerPage = 5;
-//		if(request.getParameter("page") != null) {
-//			page = Integer.parseInt(request.getParameter("page"));
-//		}
 		BillHead billHead = billHeadDAO.findShoppingByUserId(1);
+		if(billHead == null) {
+			User user = new User();
+			user.setUseId(1);
+			billHead = new BillHead();
+			billHead.setHeaUser(user);
+			billHeadDAO.create(billHead);
+		}
+		billHead = billHeadDAO.findShoppingByUserId(1);
+		for (BillDetail billDetail : billHead.getHeaBillDetails()) {
+			billDetail.calculateTotal();
+		}
+		billHead.calcualteTotal();
+		billHeadDAO.update(billHead);
 		request.setAttribute("billHead", billHead);
 		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/user/cart.jsp");
         view.forward(request, response);

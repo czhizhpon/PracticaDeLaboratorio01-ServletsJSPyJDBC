@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ec.edu.ups.dao.CompanyDAO;
-import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.Company;
 
 public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer> 
@@ -14,10 +13,8 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 
 	@Override
 	public void createTable() {
-		jdbc.update("DROP TABLE IF EXISTS users");
 		jdbc.update("DROP TABLE IF EXISTS companies");
 		
-		// SQL
 		jdbc.update("CREATE TABLE companies"
 				+ " ( "
 				+ "com_id INT NOT NULL AUTO_INCREMENT, "
@@ -25,8 +22,6 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 				+ "com_deleted BOOLEAN DEFAULT '0', "
 				+ "PRIMARY KEY (com_id) "
 				+ ") ");
-		
-		DAOFactory.getFactory().getUserDAO().createTable();
 	}
 
 	@Override
@@ -34,11 +29,8 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 		String sql = "INSERT INTO companies "
 				+ "(com_name)"
 				+ " VALUES( "
-				//+ "NULL" + ", "
 				+ "'" + company.getComName() + "' "
-				//+ "DEFAULT, "
 				+ ") ";
-		//System.out.println(sql);
 		return jdbc.update(sql);
 	}
 

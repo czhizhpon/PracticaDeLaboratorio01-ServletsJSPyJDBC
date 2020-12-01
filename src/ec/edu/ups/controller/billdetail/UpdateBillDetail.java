@@ -2,7 +2,6 @@ package ec.edu.ups.controller.billdetail;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,13 +36,18 @@ public class UpdateBillDetail extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String errorUrl = "/sgrc/JSP/error.jsp";
 		try {
+			int detAmount = Integer.parseInt(request.getParameter("det_amount"));
 			billDetail = billDetailDAO.read(Integer.parseInt(request.getParameter("det_id")));
-			billDetail.setDetAmount(Integer.parseInt(request.getParameter("det_amount")));
-			billDetail.calculateTotal();
-			billDetail.setDetDeleted(false);
-			billDetailDAO.update(billDetail);
-			RequestDispatcher view = request.getRequestDispatcher("UpdateBillHead?hea_id=" + billDetail.getDetBillHead().getHeaId());
-	        view.forward(request, response);
+			if (detAmount > billDetail.getDetProduct().getProStock()) {
+				response.getWriter().append("No hay suficiente stock. Disponible: " 
+						+ billDetail.getDetProduct().getProStock() + "&e_notice_warning");
+			}else {
+				billDetail.setDetAmount(detAmount);
+				billDetail.calculateTotal();
+				billDetail.setDetDeleted(false);
+				billDetailDAO.update(billDetail);
+				response.getWriter().append("Y&e_notice_sucess");
+			}
 		} catch (Exception e) {
 			response.sendRedirect(errorUrl);
 		}

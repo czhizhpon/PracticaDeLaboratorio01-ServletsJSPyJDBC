@@ -1,33 +1,34 @@
 package ec.edu.ups.controller.product;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
+import ec.edu.ups.model.Category;
 import ec.edu.ups.model.Product;
 
 /**
- * Servlet implementation class CreateProduct
+ * Servlet implementation class ProductList
  */
-@WebServlet("/CreateProduct")
-public class CreateProduct extends HttpServlet {
+@WebServlet("/ProductList")
+public class ProductList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private ProductDAO productDAO;
-	private Product product;
-       
+    private ProductDAO productDAO;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateProduct() {
+    public ProductList() {
         super();
         productDAO = DAOFactory.getFactory().getProductDAO();
-        product = new Product();
     }
 
 	/**
@@ -35,27 +36,17 @@ public class CreateProduct extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		List<Product> products = productDAO.findByCategoryId(1);
+		request.setAttribute("products", products);
+		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/product.jsp");
+		view.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String url = null;
-		try {
-			product.setProName(request.getParameter("pro_name"));
-			product.setProStock(Integer.parseInt(request.getParameter("pro_stock")));
-			product.setProPrice(Double.parseDouble(request.getParameter("pro_price")));
-			product.setProDeleted(false);
-			productDAO.create(product);
-			url = "/index.jsp";
-		} catch (Exception e) {
-			System.out.println("ERROR");
-			url = "/JSP/error.jsp";
-		}
-		getServletContext().getRequestDispatcher(url).forward(request, response);
+		
 	}
 
 }

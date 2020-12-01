@@ -15,19 +15,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 
 	@Override
 	public void createTable() {
-		// ** Temporal solo para pruebas
-		jdbc.update("DROP TABLE IF EXISTS products ");
-		// **
-		
 		jdbc.update("DROP TABLE IF EXISTS bill_details ");
-		
-		// ** Temporal solo para pruebas
-		jdbc.update("CREATE TABLE products (pro_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-		for (int i = 0; i < 30; i++) {
-			jdbc.update("INSERT INTO products VALUES(NULL)");
-		}
-		// **
-		
 		jdbc.update("CREATE TABLE bill_details ( "
 				+ "det_id INT NOT NULL AUTO_INCREMENT, "
 				+ "det_amount INT, "
@@ -51,10 +39,9 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 				+ billDetail.getDetTotal() + ", "
 				+ "DEFAULT, "
 				+ billDetail.getDetBillHead().getHeaId() + ", "
-				+ "NULL"
+				+ billDetail.getDetProduct().getProId() + " "
 				+ ")";
 		return jdbc.update(sql);
-		
 	}
 
 	@Override
@@ -63,7 +50,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 		ResultSet rsBillDetail = jdbc.query("SELECT * FROM bill_details WHERE det_id = " + id);
 		ResultSet rsBillHead = null;
 		try {
-			if (rsBillDetail.next()) {
+			if (rsBillDetail.next()  && !rsBillDetail.getBoolean("det_deleted")) {
 				billDetail = getBillDetail(rsBillDetail);
 				rsBillHead = jdbc.query("SELECT * FROM bill_heads WHERE hea_id = " 
 						+ rsBillDetail.getInt("hea_id"));
@@ -72,7 +59,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 					billHead = DAOFactory.getFactory().getBillHeadDAO().getBillHead(rsBillHead);
 				}
 				billDetail.setDetBillHead(billHead);
-				Product product = new Product();
+				Product product = DAOFactory.getFactory().getProductDAO().read(rsBillDetail.getInt("pro_id"));
 				billDetail.setDetProduct(product);
 			}
 		}catch (SQLException e) {
@@ -88,9 +75,14 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 		String sql = "UPDATE bill_details SET "
 				+ "det_amount = " + billDetail.getDetAmount() + ", "
 				+ "det_unit_price = " + billDetail.getDetUnitPrice() + ", "
-				+ "det_total = " + billDetail.getDetTotal() + " "
+				+ "det_total = " + billDetail.getDetTotal() + ", "
+				+ "det_deleted = '" + (!billDetail.isDetDeleted() ? 0 : 1) + "' "
 				+ "WHERE det_id = " + billDetail.getDetId() + " ";
 		jdbc.update(sql);
+		if(billDetail.getDetProduct() != null) {
+			DAOFactory.getFactory().getProductDAO().updateWhitoutCat(billDetail.getDetProduct());
+		}
+		
 	}
 
 	@Override
@@ -126,11 +118,18 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 	@Override
 	public List<BillDetail> findByBillHeadId(int id) {
 		List<BillDetail> billDetails = new ArrayList<BillDetail>();
-		ResultSet rsBillDetail = jdbc.query("SELECT * FROM bill_details WHERE hea_id = " + id);
+		ResultSet rsBillDetail = jdbc.query("SELECT * FROM bill_details WHERE hea_id = " + id + " AND det_deleted = '0'");
+		ResultSet rsProduct;
 		try {
 			while(rsBillDetail.next()) {
 				if (!rsBillDetail.getBoolean("det_deleted")) {
-					BillDetail billDetail = getBillDetail(rsBillDetail);					
+					BillDetail billDetail = getBillDetail(rsBillDetail);
+					rsProduct = jdbc.query("SELECT * FROM products WHERE pro_id = " 
+							+ rsBillDetail.getInt("pro_id"));
+					if(rsProduct.next()) {
+						Product product = DAOFactory.getFactory().getProductDAO().getProduct(rsProduct);
+						billDetail.setDetProduct(product);
+					}
 					billDetails.add(billDetail);
 				}
 			}
@@ -149,19 +148,38 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 	public BillDetail getBillDetail(ResultSet rsBillDetail) {
 		BillDetail billDetail = null;
 		try {
-			if(rsBillDetail != null && !rsBillDetail.getBoolean("det_deleted")) {
+			if(rsBillDetail != null) {
 				billDetail = new BillDetail();
 				billDetail.setDetId(rsBillDetail.getInt("det_id"));
 				billDetail.setDetAmount(rsBillDetail.getInt("det_amount"));
 				billDetail.setDetUnitPrice(rsBillDetail.getDouble("det_unit_price"));
 				billDetail.setDetTotal(rsBillDetail.getDouble("det_total"));
-				billDetail.setDetDeleted(false);
+				billDetail.setDetDeleted(rsBillDetail.getBoolean("det_deleted"));
 			}
 		} catch (SQLException e) {
 			System.out.println(">>>WARNING (JDBCBillDetailDAO:getBillDetail): " 
 					+ e.getMessage());
 		}catch (Exception e) {
 			System.out.println(">>>WARNING (JDBCBillDetailDAO:getBillDetail:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return billDetail;
+	}
+
+	@Override
+	public BillDetail getBillDetailShoppingByProductId(int proId, int heaId) {
+		BillDetail billDetail = null;
+		ResultSet rsBillDetail = jdbc.query("SELECT * FROM bill_details "
+				+ "WHERE pro_id = " + proId + " AND hea_id = " + heaId);
+		try {
+			if (rsBillDetail.next()) {
+				billDetail = getBillDetail(rsBillDetail);
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCBillDetailDAO:getBillDetailShoppingByProductId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCBillDetailDAO:getBillDetailShoppingByProductId:GLOBAL): " 
 					+ e.getMessage());
 		}
 		return billDetail;

@@ -8,6 +8,8 @@ public class Category {
 	private String catName;
 	private boolean catDeleted;
 	private List<Product> catProducts;
+	private Company catCompany;
+
 	
 	public Category() {
 		
@@ -45,10 +47,20 @@ public class Category {
 		this.catProducts = catProducts;
 	}
 
+	public Company getCatCompany() {
+		return catCompany;
+	}
+
+	public void setCatCompany(Company catCompany) {
+		this.catCompany = catCompany;
+	}
+
 	@Override
 	public String toString() {
 		return "Category [catId=" + catId + ", catName=" + catName + ", catDeleted=" + catDeleted + ", catProducts="
-				+ catProducts + "]";
+				+ catProducts + ", catCompany=" + catCompany + "]";
 	}
-	
+
+
+
 }

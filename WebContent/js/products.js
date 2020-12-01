@@ -11,34 +11,44 @@ function isNumberKey(txt, evt) {
   	return true;
 }
 
-(function($, window){
-  var arrowWidth = 30;
 
-  $.fn.resizeselect = function(settings) {  
-    return this.each(function() { 
+$(document).ready(function() {
+  $('#cat_id').change(function(){
+    $("#width_tmp_option").html($('#cat_id option:selected').text()); 
+    $(this).width($("#width_tmp_select").width());  
+  });
+});
 
-      $(this).change(function(){
-        var $this = $(this);
+function searchProduct(){
+	var s = document.getElementById('pro_name').value;
+	var cat_id = document.getElementById('cat_id').value;
+	var url = "/sgrc/store?s=" + s + "&cat_id=" + cat_id;
+	location.href = url;
+	//$.get(url, function(res){
+		//var msg = res.split("&", 2);
+		//showNotice(msg[0], msg[1]);
+		//jQuery('#father-load').load(`${url} #child-load`);
+	//});
+}
 
-        // create test element
-        var text = $this.find("option:selected").text();
-        var $test = $("<span>").html(text);
+function loadNavPage(s, cat_id, current_page, e){
+	//e.preventDefault();
+	var url = "/sgrc/store?page=" + current_page + "&s=" + s + "&cat_id=" + cat_id;
+	console.log('ENTRA')
+	location.href = url;
+	//$.get(url, function(res){
+		//var msg = res.split("&", 2);
+		//showNotice(msg[0], msg[1]);
+		//jQuery('#father-load').load(`${url} #child-load`);
+	//});
+}
 
-        // add to body, get width, and get out
-        $test.appendTo('body');
-        var width = $test.width();
-        $test.remove();
-
-        // set select width
-        $this.width(width + arrowWidth);
-
-        // run on start
-      }).change();
-
-    });
-  };
-
-  // run by default
-  $("select.resizeselect").resizeselect();                  
-
-})(jQuery, window);
+function createDetail(f_id){
+	var form = $("#" + f_id);
+	$.post("/sgrc/CreateBillDetail", form.serialize(), function(res){
+		var msg = res.split("&", 2);
+		showNotice(msg[0], msg[1]);
+		//jQuery('#father-load').load('/sgrc/CreateBillDetail #child-load');
+	});
+	//showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
+}

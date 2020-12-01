@@ -1,16 +1,37 @@
 package ec.edu.ups.mysql.jdbc;
 
+import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.BillHeadDAO;
+import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.CompanyDAO;
-import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.dao.UserDAO;
 
 public class JDBCDAOFactory extends DAOFactory{
 
 	@Override
 	public void createTables() {
+		String sql;
 		
+		sql = "DROP TABLE IF EXISTS bill_details";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS products";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS bill_heads";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS users";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS categories";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS companies";
+		ContextJDBC.getJDBC().update(sql);
+		getCompanyDAO().createTable();
+		getUserDAO().createTable();
+		getCategoryDAO().createTable();
+		getProductDAO().createTable();
+		getBillHeadDAO().createTable();
+		getBillDetailDAO().createTable();
 	}
 
 	@Override
@@ -24,8 +45,8 @@ public class JDBCDAOFactory extends DAOFactory{
 	}
 
 	@Override
-	public void getCategoryDAO() {
-		// TODO Auto-generated method stub
+	public CategoryDAO getCategoryDAO() {
+		return new JDBCCategoryDAO();
 		
 	}
 
@@ -36,8 +57,8 @@ public class JDBCDAOFactory extends DAOFactory{
 	}
 
 	@Override
-	public void getProductDAO() {
-		// TODO Auto-generated method stub
+	public ProductDAO getProductDAO() {
+		return new JDBCProductDAO();
 		
 	}
 
