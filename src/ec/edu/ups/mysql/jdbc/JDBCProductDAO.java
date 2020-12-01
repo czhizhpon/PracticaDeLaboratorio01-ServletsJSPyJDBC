@@ -32,7 +32,6 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 				+ "PRIMARY KEY (pro_id), "
 				+ "FOREIGN KEY(cat_id) REFERENCES categories(cat_id) "
 				+ ") ");
-		
 	}
 
 	@Override

@@ -18,15 +18,7 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 
 	@Override
 	public void createTable() {
-		jdbc.update("DROP TABLE IF EXISTS bill_details ");
 		jdbc.update("DROP TABLE IF EXISTS bill_heads ");
-		
-		// ** Temporal solo para pruebas
-		jdbc.update("DROP TABLE IF EXISTS users ");
-		jdbc.update("CREATE TABLE users (use_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-		jdbc.update("INSERT INTO users VALUES(NULL)");
-		// **
-		
 		jdbc.update("CREATE TABLE bill_heads ( "
 				+ "hea_id INT NOT NULL AUTO_INCREMENT, "
 				+ "hea_subtotal DECIMAL(12,2), "
@@ -39,7 +31,6 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 				+ "PRIMARY KEY (hea_id), "
 				+ "FOREIGN KEY(use_id) REFERENCES users(use_id) "
 				+ ") ");
-		DAOFactory.getFactory().getBillDetailDAO().createTable();
 	}
 
 	@Override

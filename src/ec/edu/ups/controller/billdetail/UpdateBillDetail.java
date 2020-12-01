@@ -2,7 +2,6 @@ package ec.edu.ups.controller.billdetail;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,10 +47,6 @@ public class UpdateBillDetail extends HttpServlet {
 				billDetail.setDetDeleted(false);
 				billDetailDAO.update(billDetail);
 				response.getWriter().append("Y&e_notice_sucess");
-//				RequestDispatcher view = request.getRequestDispatcher("UpdateBillHead?hea_id=" + billDetail.getDetBillHead().getHeaId());
-//				RequestDispatcher view = request.getRequestDispatcher("ShoppingList");
-//		        view.forward(request, response);
-//				response.sendRedirect("ShoppingList");
 			}
 		} catch (Exception e) {
 			response.sendRedirect(errorUrl);

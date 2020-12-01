@@ -15,19 +15,7 @@ public class JDBCBillDetailDAO extends JDBCGenericDAO<BillDetail, Integer> imple
 
 	@Override
 	public void createTable() {
-		// ** Temporal solo para pruebas
-//		jdbc.update("DROP TABLE IF EXISTS products ");
-		// **
-		
 		jdbc.update("DROP TABLE IF EXISTS bill_details ");
-		
-		// ** Temporal solo para pruebas
-//		jdbc.update("CREATE TABLE products (pro_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)");
-//		for (int i = 0; i < 30; i++) {
-//			jdbc.update("INSERT INTO products VALUES(NULL)");
-//		}
-		// **
-		
 		jdbc.update("CREATE TABLE bill_details ( "
 				+ "det_id INT NOT NULL AUTO_INCREMENT, "
 				+ "det_amount INT, "

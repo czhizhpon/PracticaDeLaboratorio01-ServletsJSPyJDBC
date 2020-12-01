@@ -2,13 +2,10 @@ package ec.edu.ups.test;
 
 import java.util.Calendar;
 
-import ec.edu.ups.dao.BillDetailDAO;
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
-import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
 import ec.edu.ups.model.User;
-import ec.edu.ups.mysql.jdbc.JDBCDAOFactory;
 
 public class BillTest {
 	public static void main(String[] args) {
