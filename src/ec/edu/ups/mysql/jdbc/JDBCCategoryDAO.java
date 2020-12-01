@@ -22,18 +22,7 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 
 	@Override
 	public void createTable() {
-		jdbc.update("DROP TABLE IF EXISTS products ");
 		jdbc.update("DROP TABLE IF EXISTS categories ");
-		jdbc.update("DROP TABLE IF EXISTS companies ");
-
-		jdbc.update("CREATE TABLE companies ("
-				+"com_id INT NOT NULL AUTO_INCREMENT "
-				+ "PRIMARY KEY )"
-				);
-		
-		jdbc.update("INSERT INTO companies VALUES "
-				+ "(NULL)");
-		
 		jdbc.update("CREATE TABLE categories ( "
 				+ "cat_id INT NOT NULL AUTO_INCREMENT, "
 				+ "cat_name VARCHAR(255), "
@@ -42,7 +31,6 @@ public class JDBCCategoryDAO extends JDBCGenericDAO<Category, Integer> implement
 				+ "PRIMARY KEY (cat_id), "
 				+ "FOREIGN KEY(com_id) REFERENCES companies(com_id) "
 				+ ") ");
-		DAOFactory.getFactory().getProductDAO().createTable();
 	}
 
 	@Override

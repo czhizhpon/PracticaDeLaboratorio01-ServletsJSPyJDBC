@@ -15,7 +15,6 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 
 	@Override
 	public void createTable() {
-		// SQL
 		jdbc.update("CREATE TABLE users"
 				+ " ( "
 				+ "use_id INT NOT NULL AUTO_INCREMENT, "
@@ -38,19 +37,15 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 				+ "(use_username, use_email, use_password, use_name, "
 				+ "use_lastname, use_role, com_id)"
 				+ " VALUES( "
-				//+ "NULL" + ", "
 				+ "'" + user.getUseUsername() + "', "
 				+ "'" + user.getUseEmail() + "', "
 				+ "MD5('" + user.getUsePassword() + "'), "
 				+ "'" + user.getUseName() + "', "
 				+ "'" + user.getUseLastname() + "', "
 				+ "'" + user.getUseRole() + "', "
-				//+ "DEFAULT, "
-				+ (user.getUseCompany() == null ? "NULL" : 
-					user.getUseCompany().getComId()) + " "
+				+ user.getUseCompany().getComId() + " "
 				+ ") ";
 		
-		//System.out.println(sql);
 		return jdbc.update(sql);
 		
 	}

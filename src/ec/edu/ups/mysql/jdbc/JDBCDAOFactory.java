@@ -12,7 +12,26 @@ public class JDBCDAOFactory extends DAOFactory{
 
 	@Override
 	public void createTables() {
+		String sql;
 		
+		sql = "DROP TABLE IF EXISTS bill_details";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS products";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS bill_heads";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS users";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS categories";
+		ContextJDBC.getJDBC().update(sql);
+		sql = "DROP TABLE IF EXISTS companies";
+		ContextJDBC.getJDBC().update(sql);
+		getCompanyDAO().createTable();
+		getUserDAO().createTable();
+		getCategoryDAO().createTable();
+		getProductDAO().createTable();
+		getBillHeadDAO().createTable();
+		getBillDetailDAO().createTable();
 	}
 
 	@Override

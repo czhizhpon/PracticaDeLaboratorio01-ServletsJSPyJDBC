@@ -38,7 +38,6 @@ public class Store extends HttpServlet {
      */
     public Store() {
         super();
-        // TODO Auto-generated constructor stub
         categoryDAO = DAOFactory.getFactory().getCategoryDAO();
         productDAO = DAOFactory.getFactory().getProductDAO();
 
@@ -110,8 +109,6 @@ public class Store extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
