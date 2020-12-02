@@ -54,6 +54,7 @@ $(function(){
 			pro_stock: "Ingrese un stock",
 			pro_price: {
 				required: "Ingrese un precio",
+				step:"Ingrese un valor con 2 decimales"
 			},
 			cat_id: {
 				valueNotEquals: "Seleccione una Categoría"

@@ -17,7 +17,8 @@ import ec.edu.ups.model.User;
 /**
  * Servlet Filter implementation class FilterLogin
  */
-@WebFilter({"/ReadCategory",  "/store",  "/ReadCompany",  "/ReadProduct",  "/ListProduct",  "/JSP/private/user/*", "/ShoppingList"})
+@WebFilter()
+//@WebFilter({"/JSP/private/user/*", "/CreateBilldetail", "/UpdateBilldetail",  "/DeleteBilldetail", "/UpdateBillhead",  "/DeleteBillhead"})
 public class FilterUser implements Filter {
 
     /**
@@ -39,14 +40,13 @@ public class FilterUser implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		boolean sesion;
-		System.out.println("Filtro User");
+
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 		HttpSession session =  httpReq.getSession(false);
 
 		try {
 			User user = (User)session.getAttribute("user");
-			System.out.println("Filtro username " + user.getUseName());
 			
 			sesion = session == null ? false : (Boolean) session.getAttribute("isLogged");
 			
@@ -59,11 +59,13 @@ public class FilterUser implements Filter {
 					httpResp.sendRedirect("/sgrc/HTML/login.html");
 				}
 			}else {
+				session.invalidate();
 				httpResp.sendRedirect("/sgrc/HTML/login.html");
 			}
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			httpResp.sendRedirect("/sgrc/HTML/login.html");
 		}
 	}

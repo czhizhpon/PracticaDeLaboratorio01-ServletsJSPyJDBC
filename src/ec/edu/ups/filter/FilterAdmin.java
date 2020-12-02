@@ -17,9 +17,12 @@ import ec.edu.ups.model.User;
 /**
  * Servlet Filter implementation class FilterAdmin
  */
-@WebFilter({"/CreateCategory",  "/ReadCategory",  "/UpdateCategory",  "/DeleteCategory",  "/CreateCompany",
-	"/ReadCompany",  "/UpdateCompany",  "/DeleteCompany",  "/CreateProduct",  "/ReadProduct",  "/UpdateProduct",
-	"/DeleteProduct",  "/CreateUser",  "/ReadUser",  "/UpdateUser",  "/DeleteUser",  "/JSP/private/admin/*"})
+//@WebFilter()
+@WebFilter({"/CreateCategory",  "/ReadCategory",  "/UpdateCategory",  "/DeleteCategory",  
+	"/CreateCompany", "/ReadCompany",  "/UpdateCompany",  "/DeleteCompany", 
+	"/CreateProduct",  "/ReadProduct",  "/UpdateProduct", "/DeleteProduct",  
+	"/CreateUser",  "/ReadUser",  "/UpdateUser",  "/DeleteUser",  "/JSP/private/admin/*", "/bills",
+	"/ListProduct", "/BillManagement", "/ReadBillHead", "/RequestBillHead", "/ListCompany", "/ListUser"})
 public class FilterAdmin implements Filter {
 
     /**
@@ -41,7 +44,6 @@ public class FilterAdmin implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		boolean sesion;
-		System.out.println("Filtro Admin");
 
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
@@ -62,6 +64,7 @@ public class FilterAdmin implements Filter {
 				}
 			}else {
 				httpResp.sendRedirect("/sgrc/HTML/login.html");
+				session.invalidate();
 			}
 			
 		} catch (Exception e) {

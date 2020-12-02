@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class FilterLogin
  */
-@WebFilter({"/CreateCategory",  "/ReadCategory",  "/UpdateCategory",  "/DeleteCategory",  "/CreateCompany",
-	"/ReadCompany",  "/UpdateCompany",  "/DeleteCompany",  "/CreateProduct",  "/ReadProduct",  "/UpdateProduct",
-	"/DeleteProduct",  "/CreateUser",  "/ReadUser",  "/UpdateUser",  "/DeleteUser",  "/JSP/private/admin/*",
-	"/CreateBilldetail",  "/ReadBilldetail",  "/UpdateBilldetail",  "/DeleteBilldetail",  "/CreateBillhead",
-	"/ReadBillhead",  "/UpdateBillhead",  "/DeleteBillhead",  "/ListProduct", "/store"})
+//@WebFilter()
+@WebFilter({"/UpdateBilldetail",  "/DeleteBilldetail",  
+	"/CreateBillhead", "/UpdateBillhead",  "/DeleteBillhead",  
+	"/store", "/ShoppingList",
+	"/JSP/private/user/*", "/CreateBilldetail", "/UpdateBilldetail",  "/DeleteBilldetail", "/UpdateBillhead",  "/DeleteBillhead"})
 public class FilterLogin implements Filter {
 
     /**
@@ -41,6 +41,7 @@ public class FilterLogin implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		boolean sesion;
+
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 		try {
