@@ -59,8 +59,8 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 		try {
 			if (rsUser.next()) {
 				user = getUser(rsUser);
-				Company company = new Company();
-				company.setComId(rsUser.getInt("com_id"));
+				Company company = DAOFactory.getFactory().getCompanyDAO().read(rsUser.getInt("com_id"));
+				//company.setComId(rsUser.getInt("com_id"));
 				user.setUseCompany(company);
 				
 			}

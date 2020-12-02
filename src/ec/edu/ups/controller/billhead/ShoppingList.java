@@ -34,15 +34,16 @@ public class ShoppingList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BillHead billHead = billHeadDAO.findShoppingByUserId(1);
+		int useId = 2;
+		BillHead billHead = billHeadDAO.findShoppingByUserId(useId);
 		if(billHead == null) {
 			User user = new User();
-			user.setUseId(1);
+			user.setUseId(useId);
 			billHead = new BillHead();
 			billHead.setHeaUser(user);
 			billHeadDAO.create(billHead);
+			billHead = billHeadDAO.findShoppingByUserId(useId);
 		}
-		billHead = billHeadDAO.findShoppingByUserId(1);
 		for (BillDetail billDetail : billHead.getHeaBillDetails()) {
 			billDetail.calculateTotal();
 		}

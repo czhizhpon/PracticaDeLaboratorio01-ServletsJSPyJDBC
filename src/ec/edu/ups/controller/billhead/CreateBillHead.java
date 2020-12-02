@@ -34,12 +34,17 @@ public class CreateBillHead extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		billHead = new BillHead();
-		User user = new User();
-		user.setUseId(1);
-		billHead.setHeaUser(user);
-		billHeadDao.create(billHead);
-		response.getWriter().append("Se ha registrado&e_notice_sucess");
+		try {
+			int useId = 2;
+			billHead = new BillHead();
+			User user = new User();
+			user.setUseId(useId);
+			billHead.setHeaUser(user);
+			billHeadDao.create(billHead);
+			response.getWriter().append("Se ha registrado&e_notice_sucess");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -47,24 +52,24 @@ public class CreateBillHead extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		String url = null;
-		
-		try {
-			billHead.setHeaSubtotal(Double.parseDouble(request.getParameter("hea_subtotal")));
-			billHead.setHeaVat(Double.parseDouble(request.getParameter("hea_vat")));
-			billHead.setHeaDate(null);
-			billHead.setHeaTotal(Double.parseDouble(request.getParameter("hea_total")));
-//			billHead.getHeaUser().setUseId(Integer.parseInt((request.getParameter("use_id"))));
-			billHead.setHeaStatus('C');
-			billHeadDao.create(billHead);
-//			System.out.println("LLEGO: " + billHead.getHeaUser().getUseId());
-			url = "/index.jsp";
-		} catch (Exception e) {
-			System.out.println("ERROR");
-			url = "/JSP/error.jsp";
-		}
-		
-		getServletContext().getRequestDispatcher(url).forward(request, response);
+//		String url = null;
+//		
+//		try {
+//			billHead.setHeaSubtotal(Double.parseDouble(request.getParameter("hea_subtotal")));
+//			billHead.setHeaVat(Double.parseDouble(request.getParameter("hea_vat")));
+//			billHead.setHeaDate(null);
+//			billHead.setHeaTotal(Double.parseDouble(request.getParameter("hea_total")));
+////			billHead.getHeaUser().setUseId(Integer.parseInt((request.getParameter("use_id"))));
+//			billHead.setHeaStatus('C');
+//			billHeadDao.create(billHead);
+////			System.out.println("LLEGO: " + billHead.getHeaUser().getUseId());
+//			url = "/index.jsp";
+//		} catch (Exception e) {
+//			System.out.println("ERROR");
+//			url = "/JSP/error.jsp";
+//		}
+//		
+//		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }
