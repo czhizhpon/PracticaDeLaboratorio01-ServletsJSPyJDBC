@@ -62,7 +62,7 @@ public class CreateUser extends HttpServlet {
 				response.getWriter().append("Hubo un error al crear el Usuario&e_notice_error");
 			}
 			
-		}catch (Exception e) {
+		} catch (Exception e) {
 			response.getWriter().append("Hubo un error al crear el Usuario&e_notice_error");
 			e.printStackTrace();
 		}

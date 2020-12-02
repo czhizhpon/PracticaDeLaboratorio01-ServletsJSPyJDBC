@@ -5,7 +5,6 @@
  function isDecimalKey(txt, evt) {
       var charCode = (evt.which) ? evt.which : evt.keyCode;
       if (charCode == 46) {
-        //Check if the text already contains the . character
         if (txt.value.indexOf('.') === -1) {
           return true;
         } else {
@@ -25,6 +24,7 @@ function isNumberKey(txt, evt) {
 	if (charCode > 31 && (charCode < 48 || charCode > 57)){
           return false;
   	}
+  	
   	return true;
 }
 
@@ -72,13 +72,45 @@ function createProduct(f_id){
 	if(valid(form)){
 		$.post("/sgrc/CreateProduct", form.serialize(), function(res, est, jqXHR){
 			var msg = res.split("&", 2);
-			showNotice(msg[0], msg[1])
+			showNotice(msg[0], msg[1]);
+			jQuery('#table_product').load('/sgrc/ListProduct #table_content');
 		});
-		// Ejemplo de los mensajes que tiene que regresar del Servlet
-		var res = "Se registró correctamente&e_notice_sucess"
-		var msg = res.split("&", 2);
-		showNotice(msg[0], msg[1])
 	} else {
 		showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
 	}
 }
+
+function readProduct(pro_id) {
+	$.get("/sgrc/ReadProduct?pro_id="+pro_id, function(res){
+			location.href = "/sgrc/ListProduct";
+		});
+}
+
+function updateProduct(f_id) {
+	var form = $("#" + f_id);
+	if(valid(form)){
+		$.post("/sgrc/UpdateProduct", form.serialize(), function(res, est, jqXHR){
+			var msg = res.split("&", 2);
+			
+			//jQuery('#table_product').load('/sgrc/ListProduct #table_content');
+			if(msg[1] == "e_notice_error"){
+				showNotice(msg[0], msg[1]);
+			} else if (msg[1] == "e_notice_sucess"){
+				location.href = "/sgrc/ListProduct"
+			}
+			
+		});
+	} else {
+		showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
+	}
+}
+
+function deleteProduct(pro_id, d){
+	$.get("/sgrc/DeleteProduct?pro_id=" + pro_id + "&pro_deleted=" + d, function(res){
+			var msg = res.split("&", 2);
+			showNotice(msg[0], msg[1]);
+			jQuery('#table_product').load('/sgrc/ListProduct #table_content');
+		});
+}
+
+

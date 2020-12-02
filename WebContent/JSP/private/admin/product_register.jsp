@@ -44,28 +44,41 @@
 				<form action="" class="text-left form col-12" id="product-form">
 					<div class="form-group ">
 						<label for="pro_name">Nombre:</label>
-						<input type="text" id="pro_name" name="pro_name" class="form-control" placeholder="Nombre">
+						<input type="text" id="pro_name" name="pro_name" class="form-control" placeholder="Nombre" value="${productRead.proName}">
 					</div>
 					<div class="form-group ">
 						<label for="pro_stock">Stock:</label>
-						<input type="number" id="pro_stock" name="pro_stock" class="form-control" placeholder="0" min="0" step="1" onkeypress="return isNumberKey(this, event);">	
+						<input type="number" id="pro_stock" name="pro_stock" class="form-control" placeholder="0" min="0" step="1" onkeypress="return isNumberKey(this, event);" value="${productRead.proStock}">	
 					</div>
 					<div class="form-group ">
 						<label for="pro_price">Precio:</label>
-						<input type="number" id="pro_price" name="pro_price" class="form-control" placeholder="0.00" min="0.00" step=".01" onkeypress="return isDecimalKey(this, event);">	
+						<input type="number" id="pro_price" name="pro_price" class="form-control" placeholder="0.00" min="0.00" step=".01" onkeypress="return isDecimalKey(this, event);" value="${productRead.proPrice}">	
 					</div>
+					<input type="hidden" value="${productRead.proId}" name="pro_id"/>
 					<div class="form-group ">
 						<label for="cat_id">Categoría:</label>	
-						<select name="cat_id" id="cat_id" class="form-control">
-							<option value="NaN">Seleccionar</option>
-					  		<option value="1">Categoría 1</option>
-						  	<option value="2">Categoría 2</option>
-						  	<option value="3">Categoría 3</option>
-						  	<option value="4">Categoría 4</option>
+						 <select name="cat_id" class="form-control">
+						 	<option value="NaN" selected>Seleccione</option>
+					    	<c:forEach var="category" items="${categories}">
+					    		<c:choose>
+						    		<c:when test="${productRead.proCategory.catId == category.catId}">
+						    			<option value="${category.catId}" selected>${category.catName}</option>
+						    		</c:when>
+						    		<c:otherwise>
+						    			<option value="${category.catId}">${category.catName}</option>
+						    		</c:otherwise>
+					    		</c:choose>
+							</c:forEach>
 						</select>
 					</div>
-					<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createProduct('product-form')">
-					<input type="button" id="accept"  class="btn btn-primary invisible" value="Aceptar">
+					<c:choose>
+						<c:when test="${empty productRead.proId}">
+							<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createProduct('product-form')">
+						</c:when>
+						<c:otherwise>
+							<input type="button" id="accept"  class="btn btn-primary" value="Aceptar" onclick="updateProduct('product-form')">
+						</c:otherwise>
+	   				</c:choose>
 	   			</form>
    			</div>
     	</div>
@@ -78,35 +91,45 @@
                     <input type="button" class="search-icon btn col-1" onclick="">
                 </div>
             </form>
-    		<div class="table-responsive">
-			  <table class="table table-striped">
-			    <thead class="thead-dark">
-			      <tr>
-			        <th scope="col">Nombre</th>
-			        <th scope="col">Stock</th>
-			        <th scope="col">Precio</th>
-			        <th scope="col">Categoría</th>
-			        <th scope="col"></th>
-			        <th scope="col"></th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			      <tr>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			    </tbody>
-			  </table>
+            <div id="table_product">
+	    		<div class="table-responsive" id="table_content">
+				  <table class="table table-striped">
+				    <thead class="thead-dark">
+				      <tr>
+				        <th scope="col">Nombre</th>
+				        <th scope="col">Stock</th>
+				        <th scope="col">Precio</th>
+				        <th scope="col">Categoría</th>
+				        <th scope="col"></th>
+				        <th scope="col"></th>
+				      </tr>
+				    </thead>
+				    <tbody>
+					    <c:set var="tableProduct" scope="request" value="${products}" />
+				    	<c:forEach var="product" items="${tableProduct}">
+					      <tr>
+					        <td>${product.proName}</td>
+					        <td>${product.proStock}</td>
+					        <td>${product.proPrice}</td>
+					        <td>${product.proCategory.catName}</td>
+					        <c:choose>
+								<c:when test="${product.proDeleted}">	
+					        		<td><a href="#" class="btn btn-outline-info disabled">Editar</a></td>
+					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 0)" class="btn btn-success">Restaurar</a></td>
+					        	</c:when>
+					        	<c:otherwise>
+					        		<td><a href="#" class="btn btn-info" onclick="readProduct(${product.proId})">Editar</a></td>
+					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 1)" class="btn btn-danger">Eliminar</a></td>
+					      		</c:otherwise>
+				      		</c:choose>
+					      </tr>
+					    </c:forEach>  
+				    </tbody>
+				  </table>
+				</div>
 			</div>
     	</div>
    	</div>
-   	<!-- No parar Bola -->
-	<button onclick="jQuery('#aaa').load(' #aaa');">Reload</button>
-	<div id="aaa"><%=new java.util.Date().toString()%></div>
 	</section>
 	
 	

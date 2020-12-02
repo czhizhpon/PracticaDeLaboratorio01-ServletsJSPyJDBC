@@ -1,6 +1,7 @@
 package ec.edu.ups.controller.product;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
+import ec.edu.ups.model.Category;
 import ec.edu.ups.model.Product;
 
 /**
@@ -20,6 +22,7 @@ public class CreateProduct extends HttpServlet {
 
 	private ProductDAO productDAO;
 	private Product product;
+	private Category category;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,34 +31,42 @@ public class CreateProduct extends HttpServlet {
         super();
         productDAO = DAOFactory.getFactory().getProductDAO();
         product = new Product();
+        category = new Category();
+        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String url = null;
+		
 		try {
+			category.setCatId(Integer.parseInt(request.getParameter("cat_id")));
 			product.setProName(request.getParameter("pro_name"));
 			product.setProStock(Integer.parseInt(request.getParameter("pro_stock")));
 			product.setProPrice(Double.parseDouble(request.getParameter("pro_price")));
-			product.setProDeleted(false);
-			productDAO.create(product);
-			url = "/index.jsp";
+			product.setProCategory(category);
+			//product.setProDeleted(false);
+			
+			int res = productDAO.create(product);
+			
+			if (res == 0) {
+				response.getWriter().append("Se ha registrado correctamente&e_notice_sucess");
+			} else {
+				response.getWriter().append("Hubo un error al crear el Producto&e_notice_error");
+			}
+			
 		} catch (Exception e) {
-			System.out.println("ERROR");
-			url = "/JSP/error.jsp";
+			response.getWriter().append("Hubo un error al crear el Producto&e_notice_error");
+			e.printStackTrace();
 		}
-		getServletContext().getRequestDispatcher(url).forward(request, response);
+		//getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }
