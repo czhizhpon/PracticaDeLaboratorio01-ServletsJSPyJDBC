@@ -178,4 +178,29 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 		return usersList;
 	}
 
+	@Override
+	public User CompareByNameANDPassword(String username, String password) {
+		User user = new User();
+		String query = "SELECT * FROM users WHERE "
+				+ "use_username like '" + username + "' AND "
+				+ "use_password like MD5('" + password + "')";
+		ResultSet rsUser = jdbc.query(query);
+		
+		try {
+			if (rsUser.next()) {
+				if (!rsUser.getBoolean("use_deleted")) {
+					user = getUser(rsUser);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCUserDAO:CompareByNameANDPassword: " 
+					+ e.getMessage());
+		} catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCUserDAO:CompareByNameANDPassword:GLOBAL): " 
+					+ e.getMessage());
+		}
+		
+		return user;
+	}
+
 }

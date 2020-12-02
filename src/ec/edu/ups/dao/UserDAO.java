@@ -23,5 +23,8 @@ public interface UserDAO extends GenericDAO<User, Integer>{
 	 * @return
 	 */
 	public abstract List<User> findByCompanyId(int id);
+	
+	public abstract User CompareByNameANDPassword(String username, String password);
+
 
 }
