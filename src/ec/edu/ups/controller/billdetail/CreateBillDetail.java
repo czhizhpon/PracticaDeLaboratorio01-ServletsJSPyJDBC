@@ -14,6 +14,7 @@ import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
 import ec.edu.ups.model.Product;
+import ec.edu.ups.model.User;
 
 /**
  * Servlet implementation class CreateBillDetail
@@ -50,14 +51,21 @@ public class CreateBillDetail extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			//int hea_id = DAOFactory.getFactory().getBillHeadDAO().
-			
+			int useId = 2;
 			int res = 0;
-			
 			int proId = Integer.parseInt(request.getParameter("pro_id"));
 			int detAmount = Integer.parseInt(request.getParameter("det_amount"));
 			Product product = productDAO.read(proId);
 			
-			billHead = billHeadDAO.findShoppingBillByUserId(1);
+			billHead = billHeadDAO.findShoppingBillByUserId(useId);
+			if(billHead == null) {
+				User user = new User();
+				user.setUseId(useId);
+				billHead = new BillHead();
+				billHead.setHeaUser(user);
+				billHeadDAO.create(billHead);
+				billHead = billHeadDAO.findShoppingBillByUserId(useId);
+			}
 			billDetail = billDetailDAO.getBillDetailShoppingByProductId(proId, billHead.getHeaId());
 			if(billDetail == null) {
 				billDetail = new BillDetail();

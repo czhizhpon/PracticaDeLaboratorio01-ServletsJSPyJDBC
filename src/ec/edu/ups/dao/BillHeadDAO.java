@@ -28,4 +28,6 @@ public interface BillHeadDAO extends GenericDAO<BillHead, Integer>{
 	public abstract BillHead getBillHead(ResultSet rsBillHead);
 	
 	public abstract void setBillHeadTotal(int id);
+	
+	public abstract List<BillHead> findBillByComId(int comId, String s);
 }

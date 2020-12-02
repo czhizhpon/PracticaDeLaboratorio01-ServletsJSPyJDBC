@@ -235,5 +235,36 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 		return billHead;
 	}
 
+	@Override
+	public List<BillHead> findBillByComId(int comId, String s) {
+		List<BillHead> billHeads = new ArrayList<BillHead>();
+		String sql = "SELECT bill_heads.*, users.use_email "
+				+ "FROM bill_heads "
+				+ "INNER JOIN users ON bill_heads.use_id = users.use_id AND users.use_email LIKE '%" + s + "%' "
+				+ "INNER JOIN companies ON companies.com_id = " + comId + " WHERE bill_heads.hea_status NOT LIKE 'C'";
+		ResultSet rsBillHead = jdbc.query(sql);
+		try {
+			while (rsBillHead.next()) {
+				BillHead billHead = getBillHead(rsBillHead);
+//				List<BillDetail> billDetails = DAOFactory.getFactory()
+//						.getBillDetailDAO().findByBillHeadId(billHead.getHeaId());
+//				billHead.setHeaBillDetails(billDetails);
+				User user = new User();
+				user.setUseEmail(rsBillHead.getString("use_email"));
+				billHead.setHeaUser(user);
+				billHeads.add(billHead);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCBillHeadDAO:findBillByComId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCBillHeadDAO:findBillByComId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		
+		return billHeads;
+	}
+
 
 }

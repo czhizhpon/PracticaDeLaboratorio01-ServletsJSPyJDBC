@@ -121,4 +121,22 @@ public class JDBCCompanyDAO extends JDBCGenericDAO<Company, Integer>
 		return company;
 	}
 
+	@Override
+	public Company geCompanyByUserId(int useId) {
+		ResultSet rsCompany = jdbc.query("SELECT * FROM companies WHERE use_id = " + useId);
+		Company company = new Company();
+		try {
+			if(rsCompany.next()) {
+				company = getCompany(rsCompany);
+			}
+		}catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCCompanyDAO:geCompanyByUserId): " 
+					+ e.getMessage());
+		} catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCCompanyDAO:geCompanyByUserId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return company;
+	}
+
 }

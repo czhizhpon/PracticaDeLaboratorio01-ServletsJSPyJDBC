@@ -7,27 +7,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ec.edu.ups.dao.BillHeadDAO;
+import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.model.BillHead;
+
 /**
  * Servlet implementation class ReadBillHead
  */
 @WebServlet("/ReadBillHead")
 public class ReadBillHead extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private BillHeadDAO billHeadDAO;
+	private BillHead billHead;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ReadBillHead() {
         super();
-        // TODO Auto-generated constructor stub
+        billHeadDAO = DAOFactory.getFactory().getBillHeadDAO();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			int heaId = Integer.parseInt(request.getParameter("hea_id"));
+			billHead = billHeadDAO.read(heaId);
+			getServletContext().setAttribute("billHeadRead", billHead);
+		} catch (Exception e) {
+			getServletContext().setAttribute("billHeadRead", null);
+			response.sendRedirect("/JSP/public/error.jsp");
+		}
 	}
 
 	/**
