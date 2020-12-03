@@ -74,8 +74,7 @@
     width: 85%;
     text-align: center;
     padding: 5px 10px;
-    position: relative;
-    left: 11px;
+    margin-left: 7%;
 }
 
 .hero-img{

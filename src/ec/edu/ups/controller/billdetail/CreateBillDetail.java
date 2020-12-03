@@ -51,7 +51,8 @@ public class CreateBillDetail extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			//int hea_id = DAOFactory.getFactory().getBillHeadDAO().
-			int useId = 2;
+			User user = (User) request.getSession().getAttribute("user");
+			int useId = user.getUseId();
 			int res = 0;
 			int proId = Integer.parseInt(request.getParameter("pro_id"));
 			int detAmount = Integer.parseInt(request.getParameter("det_amount"));
@@ -59,8 +60,6 @@ public class CreateBillDetail extends HttpServlet {
 			
 			billHead = billHeadDAO.findShoppingBillByUserId(useId);
 			if(billHead == null) {
-				User user = new User();
-				user.setUseId(useId);
 				billHead = new BillHead();
 				billHead.setHeaUser(user);
 				billHeadDAO.create(billHead);
@@ -83,13 +82,14 @@ public class CreateBillDetail extends HttpServlet {
 			if(res == 1062) {
 				response.getWriter().append("No se pudo agregar al carrito&e_notice_error");
 			} else if(res == 0) {
-				response.getWriter().append("Agregado, <a href='/sgrc/ShoppingList' class='cart-link'>ver carrito</a>&e_notice_sucess");
+				response.getWriter().append("Agregado&e_notice_sucess");
 			} else {
 				response.getWriter().append("No se pudo agregar al carrito&e_notice_error");
 			}
 		}catch (Exception e) {
-			response.getWriter().append("Error interno, no coincide la llave-valor&e_notice_error");
 			e.printStackTrace();
+			response.getWriter().append("Error interno, no coincide la llave-valor&e_notice_error");
+			
 		}
 	}
 

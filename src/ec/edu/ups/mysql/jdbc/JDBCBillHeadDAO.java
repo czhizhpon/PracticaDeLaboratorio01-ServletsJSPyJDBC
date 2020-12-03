@@ -140,7 +140,7 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 	public List<BillHead> findByUserId(int id) {
 		List<BillHead> billHeads = new ArrayList<BillHead>();
 		ResultSet rsBillHead = jdbc.query("SELECT * FROM bill_heads WHERE "
-				+ "usu_id = " + id);
+				+ "use_id = " + id + " AND hea_status NOT LIKE 'C'");
 		try {
 			while(rsBillHead.next()) {
 				if (!rsBillHead.getBoolean("hea_deleted")) {
@@ -170,8 +170,7 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 					billHead = getBillHead(rsBillHead);
 					billDetails = DAOFactory.getFactory().getBillDetailDAO().findByBillHeadId(billHead.getHeaId());
 					billHead.setHeaBillDetails(billDetails);
-					User user = new User();
-					user.setUseId(rsBillHead.getInt("use_id"));
+					User user = DAOFactory.getFactory().getUserDAO().read(rsBillHead.getInt("use_id"));
 					billHead.setHeaUser(user);
 				}
 			}
@@ -238,10 +237,11 @@ public class JDBCBillHeadDAO extends JDBCGenericDAO<BillHead, Integer> implement
 	@Override
 	public List<BillHead> findBillByComId(int comId, String s) {
 		List<BillHead> billHeads = new ArrayList<BillHead>();
-		String sql = "SELECT bill_heads.*, users.use_email "
+		String sql = "SELECT bill_heads.*, users.use_email, companies.com_id "
 				+ "FROM bill_heads "
 				+ "INNER JOIN users ON bill_heads.use_id = users.use_id AND users.use_email LIKE '%" + s + "%' "
-				+ "INNER JOIN companies ON companies.com_id = " + comId + " WHERE bill_heads.hea_status NOT LIKE 'C'";
+				+ "INNER JOIN companies ON companies.com_id = " + comId + " AND companies.com_id = users.com_id "
+				+ "WHERE bill_heads.hea_status NOT LIKE 'C'";
 		ResultSet rsBillHead = jdbc.query(sql);
 		try {
 			while (rsBillHead.next()) {

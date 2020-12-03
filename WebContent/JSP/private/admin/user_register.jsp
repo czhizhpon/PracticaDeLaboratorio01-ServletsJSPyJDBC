@@ -69,12 +69,11 @@
 				</div>
 				<div class="form-group">
 					<label for="com_id">Empresa:</label>
-					<select name="com_id" id="com_id" class="form-control">
-						<option value="NaN">Seleccionar</option>
-				  		<option value="1">Empresa 1</option>
-					  	<option value="2">Empresa 2</option>
-					  	<option value="3">Empresa 3</option>
-					  	<option value="4">Empresa 4</option>
+					<select name="com_id" class="form-control">
+					 	<option value="NaN" selected>Seleccione</option>
+				    	<c:forEach var="company" items="${companies}">
+		    				<option value="${company.comId}">${company.comName}</option>
+						</c:forEach>
 					</select>
 				</div>
 				<div class="form-group">

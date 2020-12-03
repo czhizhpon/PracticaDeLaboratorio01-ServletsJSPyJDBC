@@ -19,7 +19,8 @@ import javax.servlet.http.HttpSession;
 @WebFilter({"/UpdateBilldetail",  "/DeleteBilldetail",  
 	"/CreateBillhead", "/UpdateBillhead",  "/DeleteBillhead",  
 	"/store", "/ShoppingList",
-	"/JSP/private/user/*", "/CreateBilldetail", "/UpdateBilldetail",  "/DeleteBilldetail", "/UpdateBillhead",  "/DeleteBillhead"})
+	"/JSP/private/user/*", "/CreateBillDetail", "/UpdateBillDetail",  
+	"/DeleteBillDetail", "/UpdateBillhead",  "/DeleteBillhead", "/myBills", "/ReadBillHead"})
 public class FilterLogin implements Filter {
 
     /**
@@ -50,6 +51,7 @@ public class FilterLogin implements Filter {
 			if (sesion) {
 				chain.doFilter(request, response);
 			}else {
+				session.setAttribute("user", null);
 				session.invalidate();
 				httpResp.sendRedirect("/sgrc/HTML/login.html");
 			}

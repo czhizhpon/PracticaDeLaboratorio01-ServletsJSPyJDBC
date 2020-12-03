@@ -34,11 +34,10 @@ public class ShoppingList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int useId = 2;
+		User user = (User) request.getSession().getAttribute("user");
+		int useId = user.getUseId();
 		BillHead billHead = billHeadDAO.findShoppingByUserId(useId);
 		if(billHead == null) {
-			User user = new User();
-			user.setUseId(useId);
 			billHead = new BillHead();
 			billHead.setHeaUser(user);
 			billHeadDAO.create(billHead);

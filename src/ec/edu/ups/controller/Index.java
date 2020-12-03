@@ -1,39 +1,39 @@
-package ec.edu.ups.controller.product;
+package ec.edu.ups.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ec.edu.ups.dao.CategoryDAO;
+import ec.edu.ups.dao.CompanyDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
-import ec.edu.ups.model.Category;
+import ec.edu.ups.model.Company;
 import ec.edu.ups.model.Product;
 import ec.edu.ups.model.User;
 
 /**
- * Servlet implementation class ListProduct
+ * Servlet implementation class Index
  */
-@WebServlet("/ListProduct")
-public class ListProduct extends HttpServlet {
+@WebServlet("/home")
+public class Index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 	private ProductDAO productDAO;
-	private CategoryDAO categoryDAO;
+	private CompanyDAO companyDAO;
+	private List<Product> products;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListProduct() {
+    public Index() {
         super();
         productDAO = DAOFactory.getFactory().getProductDAO();
-        categoryDAO = DAOFactory.getFactory().getCategoryDAO();
+        companyDAO = DAOFactory.getFactory().getCompanyDAO();
     }
 
 	/**
@@ -42,22 +42,25 @@ public class ListProduct extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			User user = (User) request.getSession().getAttribute("user");
-			Product product;
-			int com_id = user.getUseCompany().getComId();
-			List<Product> productsList = productDAO.findByCompanyId(com_id);
-			List<Category> categoriesList = categoryDAO.findByCompanyId(com_id);
-			try {
-				product = (Product) getServletContext().getAttribute("productRead");
-			} catch (Exception e) {
-				product = new Product();
+			List<Company> companies = companyDAO.find();
+			List<Company> companiesAux = new ArrayList<Company>();
+			List<List<Product>> allProducts = new ArrayList<List<Product>>();
+			for (int i = 0; i < companies.size(); i++) {
+				products = productDAO.findBestProductsByComId(companies.get(i).getComId(), 5);
+				if(products.isEmpty()) {
+					//companies.remove(i);
+				} else {
+					allProducts.add(products);
+					companiesAux.add(companies.get(i));
+				}
+				
 			}
-			request.setAttribute("products", productsList);
-			request.setAttribute("categories", categoriesList);
-			request.setAttribute("productRead", product);
-			RequestDispatcher view = request.getRequestDispatcher("/JSP/private/admin/product_register.jsp");
-			view.forward(request, response);
+			request.setAttribute("companies", companiesAux);
+			request.setAttribute("allProducts", allProducts);
+			request.setAttribute("usuer", user);
+			getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 		} catch (Exception e) {
-			response.sendRedirect("/JSP/public/error.jsp");
+			e.printStackTrace();
 		}
 	}
 
@@ -65,6 +68,8 @@ public class ListProduct extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

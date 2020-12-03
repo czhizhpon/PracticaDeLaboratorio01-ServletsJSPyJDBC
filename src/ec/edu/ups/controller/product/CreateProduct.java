@@ -52,7 +52,6 @@ public class CreateProduct extends HttpServlet {
 			product.setProStock(Integer.parseInt(request.getParameter("pro_stock")));
 			product.setProPrice(Double.parseDouble(request.getParameter("pro_price")));
 			product.setProCategory(category);
-			//product.setProDeleted(false);
 			
 			int res = productDAO.create(product);
 			

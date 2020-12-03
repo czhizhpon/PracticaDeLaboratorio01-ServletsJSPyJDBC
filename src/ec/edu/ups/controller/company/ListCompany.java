@@ -21,7 +21,6 @@ import ec.edu.ups.model.Company;
 public class ListCompany extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CompanyDAO companyDAO;
-	private Company company;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,7 +28,6 @@ public class ListCompany extends HttpServlet {
     public ListCompany() {
         super();
         companyDAO = DAOFactory.getFactory().getCompanyDAO();
-        company = new Company();
     }
 
 	/**
@@ -47,8 +45,6 @@ public class ListCompany extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		doGet(request, response);
 	}
 
 }

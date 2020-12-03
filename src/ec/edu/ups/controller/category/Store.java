@@ -16,6 +16,7 @@ import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
 import ec.edu.ups.model.Product;
+import ec.edu.ups.model.User;
 
 /**
  * Servlet implementation class CategoryList
@@ -48,6 +49,7 @@ public class Store extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         categories = new ArrayList<Category>();
+        User user = (User) request.getSession().getAttribute("user");
         int catId = 0;
         String s = "";
         n = 0;
@@ -58,7 +60,7 @@ public class Store extends HttpServlet {
 		}
         s  = request.getParameter("s") == null ? "" : request.getParameter("s");
         
-        categories = categoryDAO.findByCompanyId(1);
+        categories = categoryDAO.findByCompanyId(user.getUseCompany().getComId());
         products = new ArrayList<Product>();
         for (Category category : categories) {
         	if (catId == 0) {

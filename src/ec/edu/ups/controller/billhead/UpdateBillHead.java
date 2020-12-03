@@ -14,6 +14,7 @@ import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.model.BillDetail;
 import ec.edu.ups.model.BillHead;
+import ec.edu.ups.model.User;
 
 /**
  * Servlet implementation class UpdateBillHead
@@ -37,7 +38,8 @@ public class UpdateBillHead extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			int useId = 2;
+			User user = (User) request.getSession().getAttribute("user");
+			int useId = user.getUseId();
 			billHead = billHeadDAO.findShoppingByUserId(useId);
 			if (!billHead.calcualteTotal()) {
 				response.getWriter().append("No se pudo realizar las operaciones&e_notice_error");

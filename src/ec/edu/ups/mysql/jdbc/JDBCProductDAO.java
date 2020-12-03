@@ -239,4 +239,85 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 		
 	}
 
+	@Override
+	public List<Product> findByCompanyId(int comId) {
+		String sql = "SELECT products.*"
+				+ " FROM products "
+				+ " INNER JOIN categories ON categories.cat_id = products.cat_id "
+				+ "	INNER JOIN companies ON companies.com_id = " + comId + " AND companies.com_id = categories.com_id ";
+		Category category;
+		List<Product> products = new ArrayList<Product>();
+		ResultSet rsProduct = jdbc.query(sql);
+		try {
+			while(rsProduct.next()) {
+				Product product = getProduct(rsProduct);
+				category = DAOFactory.getFactory().getCategoryDAO().read(rsProduct.getInt("cat_id"));
+				product.setProCategory(category);
+				products.add(product);
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyIdCatId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return products;
+	}
+
+	@Override
+	public List<Product> findBestProductsByComId(int comId, int limit) {
+		String sql = "SELECT products.*, categories.cat_name, COUNT(*) as total FROM products "
+				+ "	INNER JOIN bill_details ON bill_details.pro_id = products.pro_id "
+				+ " INNER JOIN categories ON categories.cat_id = products.cat_id "
+				+ " INNER JOIN companies ON companies.com_id = categories.com_id "
+				+ " WHERE companies.com_id = " + comId + " GROUP BY products.pro_id ORDER BY total DESC LIMIT " + limit;
+		List<Product> products = new ArrayList<Product>();
+		ResultSet rsProduct = jdbc.query(sql);
+		Category category;
+		try {
+			while(rsProduct.next()) {
+				Product product = getProduct(rsProduct);
+				category = new Category();
+				category.setCatName(rsProduct.getString("cat_name"));
+				product.setProCategory(category);
+				products.add(product);
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyIdCatId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return products;
+	}
+
+	@Override
+	public List<Product> findBestProducts(int limit) {
+		String sql = "SELECT products.*, COUNT(*) as total FROM products "
+				+ "	INNER JOIN bill_details ON bill_details.pro_id = products.pro_id "
+				+ "    INNER JOIN categories ON categories.cat_id = products.cat_id "
+				+ "    INNER JOIN companies ON companies.com_id = categories.com_id "
+				+ "    GROUP BY products.pro_id ORDER BY total DESC LIMIT " + limit;
+		List<Product> products = new ArrayList<Product>();
+		ResultSet rsProduct = jdbc.query(sql);
+		Category category;
+		try {
+			while(rsProduct.next()) {
+				Product product = getProduct(rsProduct);
+				category = DAOFactory.getFactory().getCategoryDAO().read(rsProduct.getInt("cat_id"));
+				product.setProCategory(category);
+				products.add(product);
+			}
+		} catch (SQLException e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyIdCatId): " 
+					+ e.getMessage());
+		}catch (Exception e) {
+			System.out.println(">>>WARNING (JDBCProductDAO:findByCompanyId:GLOBAL): " 
+					+ e.getMessage());
+		}
+		return products;
+	}
+
 }

@@ -1,6 +1,7 @@
 package ec.edu.ups.controller.billhead;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,27 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.BillHeadDAO;
 import ec.edu.ups.dao.DAOFactory;
-import ec.edu.ups.dao.UserDAO;
 import ec.edu.ups.model.BillHead;
 import ec.edu.ups.model.User;
 
 /**
- * Servlet implementation class BillManagement
+ * Servlet implementation class UserBill
  */
-@WebServlet("/bills")
-public class BillManagement extends HttpServlet {
+@WebServlet("/myBills")
+public class UserBillList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BillHeadDAO billHeadDAO;
-	private UserDAO userDAO;
 	private List<BillHead> billHeads;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BillManagement() {
+    public UserBillList() {
         super();
         billHeadDAO = DAOFactory.getFactory().getBillHeadDAO();
-        userDAO = DAOFactory.getFactory().getUserDAO();
+        billHeads = new ArrayList<BillHead>();
     }
 
 	/**
@@ -40,26 +39,18 @@ public class BillManagement extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
-		int useId = user.getUseId();
-		user = userDAO.read(useId);
+		billHeads = billHeadDAO.findByUserId(user.getUseId());
+		
+		BillHead billHeadRead;
 		try {
-			String s = "";
-			s = request.getParameter("s") == null ? "" : request.getParameter("s");
-			billHeads = billHeadDAO.findBillByComId(user.getUseCompany().getComId(), s);
-			BillHead billHeadRead;
-			try {
-				billHeadRead = (BillHead) getServletContext().getAttribute("billHeadRead");
-			} catch (Exception e) {
-				billHeadRead = new BillHead();
-			}
-			request.setAttribute("billHeads", billHeads);
-			request.setAttribute("billHeadRead", billHeadRead);
-			request.setAttribute("s", s);
-			RequestDispatcher view = request.getRequestDispatcher("/JSP/private/admin/bills_management.jsp");
-	        view.forward(request, response);
+			billHeadRead = (BillHead) getServletContext().getAttribute("billHeadRead");
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			billHeadRead = new BillHead();
 		}
+		request.setAttribute("billHeads", billHeads);
+		request.setAttribute("billHeadRead", billHeadRead);
+		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/user/bills.jsp");
+        view.forward(request, response);
 	}
 
 	/**

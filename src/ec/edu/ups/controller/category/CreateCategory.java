@@ -39,18 +39,12 @@ public class CreateCategory extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		String url = null;
-		
 		try {
 			category.setCatName(request.getParameter("cat_name"));
 			categoryDAO.create(category);
-			url = "/index.jsp";
 		} catch (Exception e) {
-			System.out.println("ERROR");
-			url = "/JSP/error.jsp";
+			System.out.println("ERROR: " + e.toString());
 		}
-		
-		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }

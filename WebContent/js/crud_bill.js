@@ -9,6 +9,14 @@ function showDetail(hea_id){
 	});
 }
 
+function showUserDetail(hea_id){
+	$.get("/sgrc/ReadBillHead?hea_id=" + hea_id , function(res){
+		jQuery('#detail-list').load('/sgrc/myBills #detail-content');
+		var e = document.getElementById("bill-details");
+		e.classList.remove("invisible")
+	});
+}
+
 function hideDetail(){
 	var e = document.getElementById("bill-details");
 	e.classList.add("invisible")
