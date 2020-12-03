@@ -182,7 +182,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 	public User CompareByNameANDPassword(String username, String password) {
 		User user = new User();
 		String query = "SELECT * FROM users WHERE "
-				+ "use_username like '" + username + "' AND "
+				+ "(use_username like '" + username + "' OR use_email like '" + username + "')  AND "
 				+ "use_password like MD5('" + password + "')";
 		ResultSet rsUser = jdbc.query(query);
 		
@@ -190,6 +190,8 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, Integer>
 			if (rsUser.next()) {
 				if (!rsUser.getBoolean("use_deleted")) {
 					user = getUser(rsUser);
+					Company company = DAOFactory.getFactory().getCompanyDAO().read(rsUser.getInt("com_id"));
+					user.setUseCompany(company);
 				}
 			}
 		} catch (SQLException e) {

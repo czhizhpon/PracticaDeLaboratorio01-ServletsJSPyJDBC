@@ -52,3 +52,19 @@ function createDetail(f_id){
 	});
 	//showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
 }
+
+function createIndexDetail(f_id){
+	var form = $("#" + f_id);
+	$.ajax({
+	  async:false
+	});
+	$.post("/sgrc/CreateBillDetail", form.serialize(), function(res){
+		var msg = res.split("&", 2);
+		if(msg[1] == "e_notice_sucess"){
+			location.href = "ShoppingList";
+		} else {
+			location.href = "EndSession";
+		}
+	});
+	//showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
+}

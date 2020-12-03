@@ -22,7 +22,7 @@ import ec.edu.ups.model.User;
 	"/CreateCompany", "/ReadCompany",  "/UpdateCompany",  "/DeleteCompany", 
 	"/CreateProduct",  "/ReadProduct",  "/UpdateProduct", "/DeleteProduct",  
 	"/CreateUser",  "/ReadUser",  "/UpdateUser",  "/DeleteUser",  "/JSP/private/admin/*", "/bills",
-	"/ListProduct", "/BillManagement", "/ReadBillHead", "/RequestBillHead", "/ListCompany", "/ListUser"})
+	"/ListProduct", "/BillManagement", "/RequestBillHead", "/ListCompany", "/ListUser"})
 public class FilterAdmin implements Filter {
 
     /**
@@ -59,16 +59,17 @@ public class FilterAdmin implements Filter {
 					chain.doFilter(request, response);
 //					httpResp.sendRedirect("JSP/");
 				}else {
+					session.setAttribute("user", null);
 					session.invalidate();
 					httpResp.sendRedirect("/sgrc/HTML/login.html");
 				}
 			}else {
-				httpResp.sendRedirect("/sgrc/HTML/login.html");
+				session.setAttribute("user", null);
 				session.invalidate();
+				httpResp.sendRedirect("/sgrc/HTML/login.html");
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			httpResp.sendRedirect("/sgrc/HTML/login.html");
 		}
 	}

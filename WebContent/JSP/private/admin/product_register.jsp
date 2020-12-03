@@ -25,7 +25,69 @@
     <title>Productos</title>
 </head>
 <body>
-	<section class="container text-center col-10">
+		<header>
+       	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      		<div class="container col-10">
+        		<a class="navbar-brand" href="/sgrc/home">Requerimientos de Compra</a>
+        		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          			<span class="navbar-toggler-icon"></span>
+        		</button>
+
+		        <div class="collapse navbar-collapse" id="navbar">
+	          		<ul class="navbar-nav mr-auto">
+			            <li class="nav-item">
+			              <a class="nav-link" href="/sgrc/home">Inicio</a>
+			            </li>
+			            <c:if test="${user.useRole eq 'U'.charAt(0)}">
+			            <li class="nav-item ">
+			              <a class="nav-link text-nowrap" href="/sgrc/myBills">Mis Pedidos</a>
+			            </li>
+			            </c:if>
+			            <c:if test="${user.useRole eq 'A'.charAt(0)}">
+			            <li class="nav-item ">
+			              <a class="nav-link text-nowrap" href="/sgrc/bills">Pedidos</a>
+			            </li>
+			            </c:if>
+			            <c:if test="${user.useRole eq 'A'.charAt(0)}">
+			            	<li class="nav-item active">
+				              <a class="nav-link text-nowrap" href="/sgrc/ListProduct">Productos</a>
+				            </li>
+			            </c:if>
+	          		</ul>
+		            <form class="mx-2 my-auto d-inline w-50" style="min-width: 100px" action="/sgrc/store" method="get">
+		            	<div class="input-group">
+		                	<input id="search-product" name="s" class="form-control my-search-input" type="search" placeholder="Buscar Productos" aria-label="Search"/>
+		                	<input type="submit" class="search-icon-light" value="">
+	                	</div>
+		            </form>
+	          		<ul class="navbar-nav ml-auto nav-flex-icons">
+				      	<li class="nav-item">
+				        	<a href="/sgrc/ShoppingList" class="nav-link">
+					        	<img src="/sgrc/img/icons/cart_icon.svg" style="width:30px"/>
+			          		</a>
+				      	</li>
+				      	<li class="nav-item dropdown pinter-a">
+			              <a class="nav-link dropdown-toggle" id="drop_session" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			              	<img src="/sgrc/img/icons/user_icon.svg" style="width:30px"> <span>&ensp;${user.useName}</span>
+			              </a>
+			              <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="drop_session">
+			                
+			                <c:choose>
+			                <c:when test="${empty user.useName}">
+			                <a class="dropdown-item" href="/sgrc/HTML/login.html">Iniciar Sesión</a>
+			                </c:when>
+			                <c:otherwise>
+			                <a class="dropdown-item" href="/sgrc/EndSession">Cerrar Sesión </a>
+			                </c:otherwise>
+			                </c:choose>
+			              </div>
+			            </li>
+			      	</ul>
+	        	</div>
+      		</div>
+    	</nav>
+	</header>
+	<section class="container text-center col-10" style="margin-top: 100px">
    	<div class="row justify-content-center">
     	<div class="col-xl-5 col-md-8">
     		<div class="row align-items-center">
@@ -83,6 +145,7 @@
    			</div>
     	</div>
     	<div class="col-xl-7 col-md-12">
+    		<!-- 
     		<form class="text-left main-form my-search-form" onsubmit="return false">
                 <div class="row justify-content-center form-group">
                     <label for="search-heroe-input" class="col-form-label col-md-3 col-12">Buscar producto:</label>
@@ -91,9 +154,10 @@
                     <input type="button" class="search-icon btn col-1" onclick="">
                 </div>
             </form>
-            <div id="table_product">
-	    		<div class="table-responsive" id="table_content">
-				  <table class="table table-striped">
+            -->
+            <div id="table_product" >
+	    		<div class="table-responsive" id="table_content" style="max-height: 600px">
+				  <table class="table table-striped ">
 				    <thead class="thead-dark">
 				      <tr>
 				        <th scope="col">Nombre</th>
@@ -131,7 +195,120 @@
     	</div>
    	</div>
 	</section>
-	
+	<!-- Footer -->
+	<footer class="page-footer font-small">
+
+      <div style="background-color: #6351ce;">
+        <div class="container">
+
+          <!-- Grid row-->
+          <div class="row py-4 d-flex align-items-center">
+
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+              <h6 class="mb-0">Síguenos en nuestras Redes Sociales</h6>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+              <!-- Facebook -->
+              <a class="fb-ic">
+                <i class="fab fa-facebook-f white-text mr-4"> </i>
+              </a>
+              <!-- Twitter -->
+              <a class="tw-ic">
+                <i class="fab fa-twitter white-text mr-4"> </i>
+              </a>
+              <!-- Google +-->
+              <a class="gplus-ic">
+                <i class="fab fa-google-plus-g white-text mr-4"> </i>
+              </a>
+              <!--Linkedin -->
+              <a class="li-ic">
+                <i class="fab fa-linkedin-in white-text mr-4"> </i>
+              </a>
+              <!--Instagram-->
+              <a class="ins-ic">
+                <i class="fab fa-instagram white-text"> </i>
+              </a>
+
+            </div>
+            <!-- Grid column -->
+
+          </div>
+          <!-- Grid row-->
+
+        </div>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="container text-center text-md-left mt-5">
+
+        <!-- Grid row -->
+        <div class="row mt-3">
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+
+            <!-- Content -->
+            <h6 class="text-uppercase font-weight-bold">BIENVENIDO</h6>
+            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+            <p>
+            	Sistema Gestor de Requerimientos de Compra
+            </p>
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+
+            <!-- Links -->
+            <h6 class="text-uppercase font-weight-bold">Productos</h6>
+            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+            <p>
+              <a href="/sgrc/store">Solicitar</a>
+            </p>
+            <p>
+              <a href="/sgrc/myBills">Mis Pedidos</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+            <!-- Links -->
+            <h6 class="text-uppercase font-weight-bold">Contacto</h6>
+            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+            <p>
+              	<i class="fas fa-home mr-3"></i> Cuenca, 10012, Ecuador</p>
+            <p>
+              	<i class="fas fa-envelope mr-3"></i> <a href="mailto:info@example.com">info@example.com</a></p>
+            <p>
+              	<i class="fas fa-phone mr-3"></i> <a href="tel:+0123456788">+ 01 234 567 88</a>
+             </p>
+
+          </div>
+          <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+      </div>
+      <!-- Footer Links -->
+
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3 copy-right">
+      	© 2020 Copyright
+      	<h6>Nuvarmy S.A. &lt;3</h6>
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+<!-- Footer -->
 	
 </body>
 </html>

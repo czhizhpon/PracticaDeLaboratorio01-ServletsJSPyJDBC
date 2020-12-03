@@ -45,18 +45,19 @@
 						<label for="cat_name">Nombre:</label>
 						<input type="text" id="cat_name" name="cat_name" class="form-control" placeholder="Nombre">
 					</div>
+					<input type="hidden" value="${user.useCompany.comId}" name="com_id">
 					<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createCategory('category-form')">
 					<input type="button" id="accept"  class="btn btn-primary invisible" value="Aceptar">
 	   			</form>
    			</div>
     	</div>
     	<div class="col-xl-6 col-md-12">
-    		<form class="text-left main-form my-search-form" onsubmit="return false">
+    		<form class="text-left main-form my-search-form" onsubmit="return false" id="category-form">
                 <div class="row justify-content-center form-group">
                     <label for="search-heroe-input" class="col-form-label col-md-3 col-12">Buscar categoría:</label>
                     <input id="search-heroe-input" name="search-heroe-input" class="form-control col-md-8 col-11" type="search" placeholder="Ingresar nombre"
                         aria-label="Search">
-                    <input type="button" class="search-icon btn col-1" onclick="">
+                    <input type="button" class="search-icon btn col-1">
                 </div>
             </form>
     		<div class="table-responsive">
@@ -69,26 +70,13 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
+			    	<c:forEach var="category" items="categories">
+			      	<tr>
+			        	<td>category.catName</td>
+			        	<td><a href="#" class="btn btn-info">Editar</a></td>
+			        	<td><a href="#" class="btn btn-danger">Eliminar</a></td>
 			      </tr>
-			      <tr>
-					<td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
-			      <tr>
-			        <td>Cell</td>
-			        <td><a href="#" class="btn btn-info">Editar</a></td>
-			        <td><a href="#" class="btn btn-danger">Eliminar</a></td>
-			      </tr>
+			      </c:forEach>
 			    </tbody>
 			  </table>
 			</div>

@@ -32,12 +32,13 @@ public class EndSession extends HttpServlet {
 		try {
 			if (session != null) {
 				session.setAttribute("isLogged", false);
+				session.setAttribute("user", null);
 				session.invalidate();
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		response.sendRedirect("/sgrc/index.jsp");
+		response.sendRedirect("/sgrc/home");
 	}
 
 	/**

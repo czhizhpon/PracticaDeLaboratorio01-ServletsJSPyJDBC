@@ -1,9 +1,8 @@
-package ec.edu.ups.controller.product;
+package ec.edu.ups.controller.category;
 
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,34 +11,40 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.CategoryDAO;
 import ec.edu.ups.dao.DAOFactory;
-import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
-import ec.edu.ups.model.Product;
+import ec.edu.ups.model.User;
 
 /**
- * Servlet implementation class ProductList
+ * Servlet implementation class ListCategory
  */
-@WebServlet("/ProductList")
-public class ProductList extends HttpServlet {
+@WebServlet("/ListCategory")
+public class ListCategory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private ProductDAO productDAO;
+	private CategoryDAO categoryDAO;
+	private List<Category> categories;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductList() {
+    public ListCategory() {
         super();
-        productDAO = DAOFactory.getFactory().getProductDAO();
+        categoryDAO = DAOFactory.getFactory().getCategoryDAO();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		List<Product> products = productDAO.findByCategoryId(1);
-		request.setAttribute("products", products);
-		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/product.jsp");
-		view.forward(request, response);
+		try {
+			User user = (User) request.getSession().getAttribute("user");
+			categories = categoryDAO.findByCompanyId(user.getUseCompany().getComId());
+			request.setAttribute("categories", categories);
+			request.setAttribute("user", user);
+			getServletContext().getNamedDispatcher("/JSP/private/admin/category_register.jsp")
+				.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
 	}
 
 	/**
