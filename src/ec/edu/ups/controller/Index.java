@@ -48,7 +48,7 @@ public class Index extends HttpServlet {
 			for (int i = 0; i < companies.size(); i++) {
 				products = productDAO.findBestProductsByComId(companies.get(i).getComId(), 5);
 				if(products.isEmpty()) {
-					//companies.remove(i);
+//					companies.remove(i);
 				} else {
 					allProducts.add(products);
 					companiesAux.add(companies.get(i));

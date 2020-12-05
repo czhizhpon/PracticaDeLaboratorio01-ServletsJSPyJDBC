@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/sgrc/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/sgrc/css/fontawesome/all.min.css">
+    
     <link rel="stylesheet" href="/sgrc/css/products.css">
     <link rel="stylesheet" href="/sgrc/css/main.css">
     <link rel="stylesheet" href="/sgrc/css/my_forms.css">
@@ -67,7 +69,7 @@
 				      	</li>
 				      	<li class="nav-item dropdown pinter-a">
 			              <a class="nav-link dropdown-toggle" id="drop_session" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			              	<img src="/sgrc/img/icons/user_icon.svg" style="width:30px"> <span>&ensp;${user.useName}</span>
+			              	<img src="/sgrc/img/icons/user_icon.svg" style="width:30px"> <span>&ensp;${user.useUsername}</span>
 			              </a>
 			              <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="drop_session">
 			                
@@ -76,6 +78,8 @@
 			                <a class="dropdown-item" href="/sgrc/HTML/login.html">Iniciar Sesión</a>
 			                </c:when>
 			                <c:otherwise>
+			                <a class="dropdown-item disabled" href="#">${user.useName} ${user.useLastname}</a>
+			                <a class="dropdown-item disabled" href="#">${user.useEmail}</a>
 			                <a class="dropdown-item" href="/sgrc/EndSession">Cerrar Sesión </a>
 			                </c:otherwise>
 			                </c:choose>
@@ -114,7 +118,7 @@
 			        <th scope="col">IVA</th>
 			        <th scope="col">Total</th>
 			        <th scope="col">Detalle</th>
-			        <th scope="col" colspan="2">Acciones</th>
+			        <th scope="col">Estado</th>
 			      </tr>
 			    </thead>
 			    <tbody>
