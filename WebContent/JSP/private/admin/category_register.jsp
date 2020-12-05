@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/sgrc/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/sgrc/css/fontawesome/all.min.css">
+    
     <link rel="stylesheet" href="/sgrc/css/products.css">
     <link rel="stylesheet" href="/sgrc/css/main.css">
     <link rel="stylesheet" href="/sgrc/css/my_forms.css">
