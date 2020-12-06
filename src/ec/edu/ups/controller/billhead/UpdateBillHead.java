@@ -38,13 +38,13 @@ public class UpdateBillHead extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			boolean flag = false;
 			User user = (User) request.getSession().getAttribute("user");
 			int useId = user.getUseId();
 			billHead = billHeadDAO.findShoppingByUserId(useId);
 			if (!billHead.calcualteTotal()) {
 				response.getWriter().append("No se pudo realizar las operaciones&e_notice_error");
 			}else {
-				billHead.setHeaStatus('R');
 				billHead.setHeaDate(Calendar.getInstance());
 				if (billHead.getHeaBillDetails() == null) {
 					response.getWriter().append("No se encontraron productos en el carrito&e_notice_warning");
@@ -57,14 +57,22 @@ public class UpdateBillHead extends HttpServlet {
 									+ "no hay stock suficiente para \"" 
 									+ billDetail.getDetProduct().getProName() + "\". Disponible: " 
 									+ billDetail.getDetProduct().getProStock() + "&e_notice_warning");
+							flag = false;
 							break;
 						}else {
 							billDetail.getDetProduct().setProStock(stock - amount);
-							billHeadDAO.update(billHead);
-							response.getWriter().append("a&e_notice_sucess");
-							RequestDispatcher view = request.getRequestDispatcher("CreateBillHead");
-							view.forward(request, response);
+							billDetail.calculateTotal();
+							flag = true;
 						}
+					}
+					if(flag) {
+						billHead.setHeaStatus('R');
+						billHead.calcualteTotal();
+						billHeadDAO.update(billHead);
+						response.getWriter().append("a&e_notice_sucess");
+						RequestDispatcher view = request.getRequestDispatcher("CreateBillHead");
+						view.forward(request, response);
+						
 					}
 				}
 				

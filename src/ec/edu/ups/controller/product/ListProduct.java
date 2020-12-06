@@ -2,6 +2,7 @@ package ec.edu.ups.controller.product;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
 import ec.edu.ups.model.Product;
 import ec.edu.ups.model.User;
+import ec.edu.ups.resources.MathFunction;
 
 /**
  * Servlet implementation class ListProduct
@@ -51,6 +53,26 @@ public class ListProduct extends HttpServlet {
 			} catch (Exception e) {
 				product = new Product();
 			}
+			
+			int currentPage;
+			try {
+				currentPage = Integer.parseInt(request.getParameter("page"));
+			}catch (Exception e) {
+				currentPage = 0;
+			}
+			Map<String, Integer> nav = MathFunction.getNavPages(productsList.size(), currentPage, 5);
+			int min = nav.get("min");
+			int max = nav.get("max");
+			int minP = nav.get("minP");
+			int maxP = nav.get("maxP");
+			int maxPages = nav.get("maxPages");
+			productsList = productsList.subList(min, max + 1);
+			
+			request.setAttribute("min", minP);
+			request.setAttribute("max", maxP);
+			request.setAttribute("maxPages", maxPages);
+			request.setAttribute("currentPage", currentPage);
+			
 			request.setAttribute("products", productsList);
 			request.setAttribute("categories", categoriesList);
 			request.setAttribute("productRead", product);

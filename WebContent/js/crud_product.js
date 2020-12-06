@@ -81,13 +81,13 @@ function createProduct(f_id){
 	}
 }
 
-function readProduct(pro_id) {
+function readProduct(pro_id, page) {
 	$.get("/sgrc/ReadProduct?pro_id="+pro_id, function(res){
-			location.href = "/sgrc/ListProduct";
+			location.href = "/sgrc/ListProduct?page=" + page;
 		});
 }
 
-function updateProduct(f_id) {
+function updateProduct(f_id, page) {
 	var form = $("#" + f_id);
 	if(valid(form)){
 		$.post("/sgrc/UpdateProduct", form.serialize(), function(res, est, jqXHR){
@@ -97,7 +97,7 @@ function updateProduct(f_id) {
 			if(msg[1] == "e_notice_error"){
 				showNotice(msg[0], msg[1]);
 			} else if (msg[1] == "e_notice_sucess"){
-				location.href = "/sgrc/ListProduct"
+				location.href = "/sgrc/ListProduct?page=" + page
 			}
 			
 		});
@@ -106,11 +106,12 @@ function updateProduct(f_id) {
 	}
 }
 
-function deleteProduct(pro_id, d){
+function deleteProduct(pro_id, d, page){
 	$.get("/sgrc/DeleteProduct?pro_id=" + pro_id + "&pro_deleted=" + d, function(res){
 			var msg = res.split("&", 2);
 			showNotice(msg[0], msg[1]);
-			jQuery('#table_product').load('/sgrc/ListProduct #table_content');
+			var url = "/sgrc/ListProduct?page=" + page
+			jQuery('#table_product').load(`${url} #table_content`);
 		});
 }
 
