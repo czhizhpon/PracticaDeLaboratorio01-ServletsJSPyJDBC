@@ -145,6 +145,49 @@
 		      	</c:forEach>
 			    </tbody>
 			  </table>
+			   <p>
+						Página ${currentPage + 1} de ${maxPages + 1}
+					</p>
+				  <div class="justify-content-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							<c:choose>
+							<c:when test="${currentPage == 0}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Anterior</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('myBills?', ${currentPage - 1}, event)">Anterior</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+							<c:forEach var="i" begin="${min}" end="${max}">
+								<c:choose>
+								<c:when test="${currentPage == i}">
+									<li class="page-item active"><a class="page-link" href="#" onclick="loadPage('myBills?', ${i}, event)">${i + 1}</a></li>
+								</c:when >
+								<c:otherwise>
+									<li class="page-item"><a class="page-link" href="#" onclick="loadPage('myBills?', ${i}, event)">${i + 1}</a></li>
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:choose>
+							<c:when test="${currentPage == max}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Siguiente</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('myBills?', ${currentPage + 1}, event)">Siguiente</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+						</ul>
+					</nav>
+				</div>
 			</div>
     	</div>
     	<div class="col-xl-5 col-lg-10 col-10 invisible" id="bill-details">
@@ -175,6 +218,7 @@
 				      </c:forEach>
 				    </tbody>
 				  </table>
+				 
 				</div>
 			</div>
     	</div>

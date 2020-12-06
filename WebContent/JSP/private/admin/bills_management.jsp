@@ -108,7 +108,8 @@
                 <div id="notice" class="div_notice"></div>
       		</div>
     		<div class="table-responsive" id="bill-list">
-			  <table class="table table-striped" id="bill-content">
+    		<div id="bill-content">
+			  <table class="table table-striped">
 			    <thead class="thead-dark">
 			      <tr>
 			      	<th scope="col">Correo</th>
@@ -132,15 +133,15 @@
 			        <td><button class="btn btn-outline-secondary" onclick="showDetail(${billHead.heaId})">Ver Detalle</button></td>
 			        <c:choose>
 			        <c:when test="${billHead.heaStatus eq 'R'.charAt(0)}">
-			        <td><button class="btn btn-success" role="button" onclick="updateBill('A', ${billHead.heaId})">Aprobar</button></td>
-			        <td><button class="btn btn-danger" role="button" onclick="updateBill('D', ${billHead.heaId})">Rechazar</button></td>
+			        <td><button class="btn btn-success" role="button" onclick="updateBill('A', ${billHead.heaId}, '${s}', ${currentPage})">Aprobar</button></td>
+			        <td><button class="btn btn-danger" role="button" onclick="updateBill('D', ${billHead.heaId}, '${s}', ${currentPage})">Rechazar</button></td>
 			      	</c:when>
 			      	<c:when test="${billHead.heaStatus eq 'A'.charAt(0)}">
 			      	<td><button class="btn btn-outline-success disabled" role="button">Aprobado</button></td>
-			        <td><button class="btn btn-danger" role="button" onclick="updateBill('D', ${billHead.heaId})">Rechazar</button></td>
+			        <td><button class="btn btn-danger" role="button" onclick="updateBill('D', ${billHead.heaId}, '${s}', ${currentPage})">Rechazar</button></td>
 			      	</c:when>
 			      	<c:when test="${billHead.heaStatus eq 'D'.charAt(0)}">
-			      	<td><button class="btn btn-success" role="button" onclick="updateBill('A', ${billHead.heaId})">Aprobar</button></td>
+			      	<td><button class="btn btn-success" role="button" onclick="updateBill('A', ${billHead.heaId}, '${s}', ${currentPage})">Aprobar</button></td>
 			        <td><button class="btn btn-outline-danger disabled " role="button">Rechazado</button></td>
 			      	</c:when>
 			      	</c:choose>
@@ -148,7 +149,52 @@
 		      	</c:forEach>
 			    </tbody>
 			  </table>
+			  <p>
+				Página ${currentPage + 1} de ${maxPages + 1}
+			</p>
+			 	<div class="justify-content-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							<c:choose>
+							<c:when test="${currentPage == 0}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Anterior</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('bills?s=${s}&', ${currentPage - 1}, event)">Anterior</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+							<c:forEach var="i" begin="${min}" end="${max}">
+								<c:choose>
+								<c:when test="${currentPage == i}">
+									<li class="page-item active"><a class="page-link" href="#" onclick="loadPage('bills?s=${s}&', ${i}, event)">${i + 1}</a></li>
+								</c:when >
+								<c:otherwise>
+									<li class="page-item"><a class="page-link" href="#" onclick="loadPage('bills?s=${s}&', ${i}, event)">${i + 1}</a></li>
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:choose>
+							<c:when test="${currentPage == max}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Siguiente</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('bills?s=${s}&', ${currentPage + 1}, event)">Siguiente</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+						</ul>
+					</nav>
+				</div>
+				</div>
 			</div>
+			
     	</div>
     	<div class="col-xl-4 col-lg-10 col-10 invisible" style="margin-top: 54px;" id="bill-details">
     		<h3>Detalle</h3>
@@ -182,6 +228,7 @@
 			</div>
     	</div>
    	</div>
+   	
     </section>
     <!-- Footer -->
 	<footer class="page-footer font-small">

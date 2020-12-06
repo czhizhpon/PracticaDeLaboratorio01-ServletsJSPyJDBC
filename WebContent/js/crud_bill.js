@@ -28,10 +28,11 @@ function searchBill(){
 	location.href = url;
 }
 
-function updateBill(hea_status, hea_id){
+function updateBill(hea_status, hea_id, s, page){
 	$.get("/sgrc/RequestBillHead?hea_status=" + hea_status + "&hea_id=" + hea_id, function(res){
 		var msg = res.split("&", 2);
 		showNotice(msg[0], msg[1]);
-		jQuery('#bill-list').load('/sgrc/bills #bill-content');
+		var url = "/sgrc/bills?s=" + s + "&page=" + page
+		jQuery('#bill-list').load(`${url} #bill-content`);
 	});
 }

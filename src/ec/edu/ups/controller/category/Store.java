@@ -3,6 +3,7 @@ package ec.edu.ups.controller.category;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import ec.edu.ups.dao.ProductDAO;
 import ec.edu.ups.model.Category;
 import ec.edu.ups.model.Product;
 import ec.edu.ups.model.User;
+import ec.edu.ups.resources.MathFunction;
 
 /**
  * Servlet implementation class CategoryList
@@ -24,11 +26,6 @@ import ec.edu.ups.model.User;
 @WebServlet("/store")
 public class Store extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final int DIV = 7;
-	
-	private int maxPages;
-	private int currentPage;
-	private int n;
 	
     private CategoryDAO categoryDAO;
     private ProductDAO productDAO;
@@ -52,7 +49,6 @@ public class Store extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         int catId = 0;
         String s = "";
-        n = 0;
         try {
            catId  = Integer.parseInt(request.getParameter("cat_id"));
 		} catch (Exception e) {
@@ -71,36 +67,27 @@ public class Store extends HttpServlet {
 				}
 			}
 		}
+        int currentPage;
 		try {
 			currentPage = Integer.parseInt(request.getParameter("page"));
 		}catch (Exception e) {
 			currentPage = 0;
 		}
-		n = products.size();
-		maxPages = (int)((n - 1) / DIV);
-        var min = currentPage * DIV;
-        var max = min + (DIV - 1);
-        if(max >= n){
-            max = n - 1;
-        }
-        min = min > max ? max : min;
-        min = min < 0 ? 0 : min;
-        products = products.subList(min, max + 1);
-        
-        min = currentPage - 3;
-        if(min < 0) {
-        	min = 0;
-        }
-        max = currentPage + 3;
-        if(max >= maxPages) {
-        	max = maxPages;
-        }
-		request.setAttribute("min", min);
-		request.setAttribute("max", max);
+		Map<String, Integer> nav = MathFunction.getNavPages(products.size(), currentPage, 5);
+		int min = nav.get("min");
+		int max = nav.get("max");
+		int minP = nav.get("minP");
+		int maxP = nav.get("maxP");
+		int maxPages = nav.get("maxPages");
+		products = products.subList(min, max + 1);
+		
+		request.setAttribute("min", minP);
+		request.setAttribute("max", maxP);
 		request.setAttribute("maxPages", maxPages);
+		request.setAttribute("currentPage", currentPage);
+		
 		request.setAttribute("catId", catId);
 		request.setAttribute("s", s);
-		request.setAttribute("currentPage", currentPage);
         request.setAttribute("categories", categories);
         request.setAttribute("productsList", products);
 		RequestDispatcher view = request.getRequestDispatcher("/JSP/private/user/products.jsp");

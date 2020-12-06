@@ -44,8 +44,9 @@ function getXMLRequest(url, action_function){
     xmlhttp.send();
 }
 
-function createBillDetail(){
-	
+function loadPage(page, i, e){
+	var url = "/sgrc/" + page +"page=" + i;
+	location.href = url;
 }
 
 function updateProducts(pro_id){

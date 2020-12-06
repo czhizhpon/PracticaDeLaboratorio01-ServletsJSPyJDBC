@@ -142,7 +142,7 @@
 							<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createProduct('product-form')">
 						</c:when>
 						<c:otherwise>
-							<input type="button" id="accept"  class="btn btn-primary" value="Aceptar" onclick="updateProduct('product-form')">
+							<input type="button" id="accept"  class="btn btn-primary" value="Aceptar" onclick="updateProduct('product-form', ${currentPage})">
 						</c:otherwise>
 	   				</c:choose>
 	   			</form>
@@ -183,17 +183,60 @@
 					        <c:choose>
 								<c:when test="${product.proDeleted}">	
 					        		<td><a href="#" class="btn btn-outline-info disabled">Editar</a></td>
-					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 0)" class="btn btn-success">Restaurar</a></td>
+					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 0, ${currentPage})" class="btn btn-success">Restaurar</a></td>
 					        	</c:when>
 					        	<c:otherwise>
-					        		<td><a href="#" class="btn btn-info" onclick="readProduct(${product.proId})">Editar</a></td>
-					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 1)" class="btn btn-danger">Eliminar</a></td>
+					        		<td><a href="#" class="btn btn-info" onclick="readProduct(${product.proId}, ${currentPage})">Editar</a></td>
+					        		<td><a href="#" id="deleteButton" onclick="deleteProduct(${product.proId}, 1, ${currentPage})" class="btn btn-danger">Eliminar</a></td>
 					      		</c:otherwise>
 				      		</c:choose>
 					      </tr>
-					    </c:forEach>  
+					    </c:forEach>
 				    </tbody>
 				  </table>
+				  	<p>
+						Página ${currentPage + 1} de ${maxPages + 1}
+					</p>
+				  <div class="justify-content-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							<c:choose>
+							<c:when test="${currentPage == 0}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Anterior</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('ListProduct?', ${currentPage - 1}, event)">Anterior</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+							<c:forEach var="i" begin="${min}" end="${max}">
+								<c:choose>
+								<c:when test="${currentPage == i}">
+									<li class="page-item active"><a class="page-link" href="#" onclick="loadPage('ListProduct?', ${i}, event)">${i + 1}</a></li>
+								</c:when >
+								<c:otherwise>
+									<li class="page-item"><a class="page-link" href="#" onclick="loadPage('ListProduct?', ${i}, event)">${i + 1}</a></li>
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:choose>
+							<c:when test="${currentPage == max}">
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Siguiente</a>
+								</li>
+							</c:when >
+							<c:otherwise>
+								<li class="page-item">
+									<a class="page-link" href="#" onclick="loadPage('ListProduct?', ${currentPage + 1}, event)">Siguiente</a>
+								</li>
+							</c:otherwise>
+							</c:choose>
+						</ul>
+					</nav>
+				</div>
 				</div>
 			</div>
     	</div>
