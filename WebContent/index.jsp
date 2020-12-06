@@ -127,6 +127,7 @@
 			<c:forEach var="company" items="${companies}">
 			<c:if test="${allProducts.get(i).size() != 0}">
 			<h3>${company.comName}</h3>
+			<p>Productos populares</p>
 			<div class="row justify-content-center my-section-dark">
 				<div class="col-10">
 				<div id="main_notice" class="notice_container e_hidden">
@@ -166,6 +167,7 @@
 			<c:forEach var="company" items="${companies}">
 			<c:if test="${allProducts.get(i).size() != 0 and company.comName eq user.useCompany.comName}">
 			<h3>${company.comName}</h3>
+			<p>Productos populares</p>
 			<div class="row justify-content-center my-section-dark">
 				<div class="col-10">
 				<div id="main_notice" class="notice_container e_hidden">

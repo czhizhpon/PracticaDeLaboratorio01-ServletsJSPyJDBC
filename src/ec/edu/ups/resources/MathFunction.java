@@ -1,10 +1,6 @@
 package ec.edu.ups.resources;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import ec.edu.ups.model.BillDetail;
@@ -13,10 +9,8 @@ import ec.edu.ups.model.BillHead;
 public class MathFunction {
 
 	public static double getTrunkDecimal(double n) {
-		NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
-		DecimalFormat df = (DecimalFormat)nf;		
-		df.setRoundingMode(RoundingMode.DOWN);
-		return Double.parseDouble(df.format(n));
+		n = Math.round(n * 100.0)/100.0;
+		return n;
 	}
 	
 	public static void setBillHeadTotal(BillHead bh) {
