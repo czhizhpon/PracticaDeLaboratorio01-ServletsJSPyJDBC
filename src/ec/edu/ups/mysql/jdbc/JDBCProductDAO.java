@@ -267,7 +267,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 
 	@Override
 	public List<Product> findBestProductsByComId(int comId, int limit) {
-		String sql = "SELECT products.*, categories.cat_name, COUNT(*) as total FROM products "
+		String sql = "SELECT products.*, categories.cat_name, SUM(bill_details.det_amount) as total FROM products "
 				+ "	INNER JOIN bill_details ON bill_details.pro_id = products.pro_id "
 				+ " INNER JOIN categories ON categories.cat_id = products.cat_id "
 				+ " INNER JOIN companies ON companies.com_id = categories.com_id "
@@ -295,7 +295,7 @@ public class JDBCProductDAO extends JDBCGenericDAO<Product, Integer> implements 
 
 	@Override
 	public List<Product> findBestProducts(int limit) {
-		String sql = "SELECT products.*, COUNT(*) as total FROM products "
+		String sql = "SELECT products.*, SUM(bill_details.det_amount) as total FROM products "
 				+ "	INNER JOIN bill_details ON bill_details.pro_id = products.pro_id "
 				+ "    INNER JOIN categories ON categories.cat_id = products.cat_id "
 				+ "    INNER JOIN companies ON companies.com_id = categories.com_id "

@@ -40,9 +40,9 @@ public class FilterLogin implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
+			throws IOException, ServletException {
 		boolean sesion;
-
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 		try {
@@ -51,14 +51,14 @@ public class FilterLogin implements Filter {
 			if (sesion) {
 				chain.doFilter(request, response);
 			}else {
-				session.setAttribute("user", null);
+				session.setAttribute("isLogged", false);
 				session.invalidate();
 				httpResp.sendRedirect("/sgrc/HTML/login.html");
 			}
 		} catch (Exception e) {
+//			System.out.println(e.getMessage());
 			httpResp.sendRedirect("/sgrc/HTML/login.html");
 		}
-		
 	}
 
 	/**
