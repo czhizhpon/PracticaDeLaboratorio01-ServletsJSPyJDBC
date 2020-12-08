@@ -69,22 +69,28 @@ Práctica de Plataformas Web en donde se aplican conocimientos de programación 
 **Herramientas utilizadas:**
 > - **IDE:** Eclipse
 > - **JDK:** v11.09
-> - **SGBD:** MariaDB
+> - **SGBD:** MariaDB, **Nombre de la BD:** sgrc
 > - **SVR de aplicaciones:** Tomcat
+> - •	**Otros:** jQuery, jQuery Validation Plugin, Bootstrap, Font Awesome
 
-El desarrollo de la aplicación web se ha realizado siguiendo las recomendaciones y requerimientos planteados. Para tener una mejor organización se ha divido el modelo y controlador en 6 paquetes de acuerdo a su contenido.
+El desarrollo de la aplicación web se ha realizado siguiendo las recomendaciones y requerimientos planteados. Para tener una mejor organización se ha divido el modelo y controlador en 7 paquetes de acuerdo a su contenido: controller, dao, filter, model, jdbc, resources y test.
 
 ![imagen](resources/Imagen1.png)
 
-Así mismo, para la parte de la vista se ha organizado por carpetas dependiendo del tipo de archivo. Además, cabe resaltar que se han divido las páginas JSP en dos: la parte pública y la privada.
+En el paquete controller, se encuentran los Servlets que realizan las funciones CRUD y List para cada uno de los modelos que se pudieron abstraer durante el análisis de los requerimientos. En el paquete model se encuentran los POJOs, los cuales son: Product, User, Company, Category, Bill Head y Bill Detail. 
+Para la persistencia de datos, las interfaces y clases se encuentran distribuidas en los paquetes dao y mysql.jdbc. Además, para poder manejar la seguridad y control de acceso a las funcionalidades se crearon filtros, los cuales se encuentran en el paquete filter. 
+Adicionalmente, para comprobar el funcionamiento de la conexión con la base de datos, e ir probando las funcionalidades se creó el paquete test para crear clases de prueba.  Finalmente, en el paquete resources se encuentran clases que complementan al proyecto, como la parametrización y los cálculos matemáticos.
+
+Así mismo, para la parte de la vista se ha organizado por carpetas dependiendo del tipo de archivo, esto incluye las hojas de estilos, las imágenes e íconos además de las funciones de JavaScript. Cabe resaltar que se han divido las páginas JSP en dos: la parte pública y la privada.
 
 ![imagen](resources/Imagen2.png)
 
-Tal como se planteó en los requerimientos, la parte pública es una página que muestra una vista general del sistema, en la cual, se presentan los catálogos de productos por empresa. Para ello se ha utilizado Bootstrap, para brindar una mejor experiencia de usuario, tal como se planteó como ejemplo.
+Tal como se planteó en los requerimientos, la parte pública es una página que muestra una vista general del sistema, en la cual, se presentan los catálogos de productos por empresa. Como requerimientos se pide que se piense en la experiencia de usuario, por lo que se optó por realizar un diseño moderno y minimalista a través del framework de Bootstrap. Como resultado se obtuvo un sitio web basado en la plantilla de ejemplo presentada en la Ilustración 1. 
 
 ![imagen](resources/Imagen3.png)
 
-Para ingresar a las funcionalidades del sistema, se deberá ingresar mediante un inicio de sesión.  El mismo estará asegurado mediante el uso de sesiones y filtros de manera interna.
+Por requerimientos, para ingresar a las funcionalidades del sistema, se deberá realizarlos a través de un inicio de sesión, diferenciando:  Administradores y Usuarios. Para ello se aplican los filtros mediante el uso de sesiones para lograr este requisito de seguridad; que, en caso de no cumplirlos, redirigirá al usuario de nuevo hacia la página de Log in.
+A continuación, se puede ver tanto la página web en donde se realiza este proceso, como el código de los filtros que actúan de manera interna en el sistema.
 
 **Parte de la Vista:**
 
@@ -94,29 +100,40 @@ Para ingresar a las funcionalidades del sistema, se deberá ingresar mediante un
 
 ![imagen](resources/Imagen5.png)
 
-Para los requerimientos de un “Usuario”, se solicitaba que pueda realizar un CRUD, además de listar sus requerimientos de compra.
+![imagen](resources/ImagenSesiones.png)
+
+Para los requerimientos de un “Usuario”, se solicitaba que pueda realizar un CRUD acerca de los requerimientos de compra (pedidos). Además, de listar los que ha realizado y mostrar el estado. Para ello se ha pensado en tres páginas exclusivas del mismo.
+La primera, es donde podrá explorar los productos que se encuentran disponibles en la empresa a la que está afiliado. En esta, se listan todos los productos junto con una breve descripción de las características que posee. La misma cuenta con una barra de búsqueda y navegación a través de una paginación. Es aquí en donde se van escogiendo los productos que se quieren agregar al carrito de compras.
 
 ![imagen](resources/Imagen6.png)
 
+Una vez que el usuario haya agregado todos los productos que haya visto convenientes, podrá dirigirse a la segunda página exclusiva, la del carrito de compras. Esta página contiene la lista de los productos que ha agregado, además podrá cambiar la cantidad que requiere, eliminarlos o regresar al explorador. Además, se presenta la cantidad de dinero total que resultará de aquel requerimiento de compra. 
+
 ![imagen](resources/Imagen7.png)
+
+La tercera y última página, es aquella que muestra una lista de los pedidos ya realizados a la empresa. En la misma, se presenta la fecha del pedido, el total, además del estado actual del requerimiento de compra: “Pendiente”, “Aprobado” o “Rechazado”.
 
 ![imagen](resources/Imagen8.png)
 
-Para la parte de los requerimientos del “Administrador”, se solicitaba que este pudiera realizar un CRUD, y una lista de todos los productos de su empresa. Además, se el podrá listar todos los requerimientos de compra que se hayan realizado, y podrá aprobarlos o rechazarlos.
+Para la parte de los requerimientos del “Administrador”, se solicitaba que este pudiera realizar un CRUD, y una lista de todos los productos de su empresa. Para ello se optó por diseñar una página que permita realizar todas las funciones en el mismo lugar.
 
 **Vista de la Gestión de Productos:**
+
+Como se aprecia en la Ilustración 11, en la parte izquierda se presentan los campos para crear otro nuevo producto en esa empresa y a qué categoría pertenecerá dicho producto. En la parte derecha de la página se presenta una lista paginada de los productos ya registrados en el sistema. Además, en la tabla también se presentan dos botones, uno que permitirá editar los datos del producto elegido, así como otro que permite eliminar (de manera lógica) o restaurar el mismo.
 
 ![imagen](resources/Imagen10.png)
 
 **Vista de los Requerimientos de Compra:**
 
+Otro de los requerimientos funcionales de los administradores es la capacidad para aprobar o rechazar los pedidos que se hayan realizado para su empresa. Para ello, se creó otra página en donde se listan los pedidos pendientes también a través de una paginación. En esta página además se puede ver el detalle de los pedidos realizados.
+
 ![imagen](resources/Imagen11.png)
 
-Para la parte de la persistencia de datos, se ha solicitado que se realice mediante el uso del patrón DAO, en conjunto con JDBC (Java Databse Connectivity). Esta API es básicamente una colección de métodos e interfaces mediante las cuales se puede gestionar las conexiones y transacciones con la base de datos a través del lenguaje SQL de la misma.
+Para la parte de la persistencia de datos, se ha solicitado que se realice mediante el uso del patrón DAO, en conjunto con JDBC (Java Database Connectivity). Esta API es básicamente una colección de métodos e interfaces mediante las cuales se puede gestionar las conexiones y transacciones con la base de datos a través del lenguaje SQL de la misma.
 
 ![imagen](resources/Imagen12.png)
 
-Para ello, se crearon métodos CRUD para cada entidad abstraída de los requerimientos, en donde se persiste y se abstrae la información en base a consultas SQL.
+Para ello, se crearon métodos CRUD para cada entidad abstraída de los requerimientos, en donde se persiste y se abstrae la información en base a consultas SQL. Nota: Se elimina de manera lógica, no física.
 
 ![imagen](resources/Imagen13.png)
 
@@ -128,7 +145,9 @@ Para ello, se crearon métodos CRUD para cada entidad abstraída de los requerim
 
 ![imagen](resources/Imagen17.png)
 
+A fin de evaluar el sistema desarrollado, se creó la clase “CreateTables” en el paquete de test, la cual inserta los datos necesarios en la BD, para realizar las pruebas correspondientes dentro de la aplicación web.
 
+![imagen](resources/ImagenCreate.png)
 
 **RESULTADO(S) OBTENIDO(S)**:
 
